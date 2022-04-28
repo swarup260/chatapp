@@ -2,19 +2,40 @@ const ApplicationError = require("../error/ApplicationError")
 const crypto = require('crypto')
 const util = require('util')
 const scrypt = util.promisify(crypto.scrypt)
+const jwt = require('jsonwebtoken')
+const fs = require('fs')
+const readFile = util.promisify(fs.readFile)
+
+/* private functions */
+async function getPrivateKey() {
+    try {
+        return await readFile('./privatekey.pem', 'utf-8')
+    } catch (error) {
+        throw error
+    }
+}
+
+async function getPublicKey() {
+    try {
+        return await readFile('./publickey.pem', 'utf-8')
+    } catch (error) {
+        throw error
+    }
+}
+
 
 module.exports = {
 
-    async generateToken(payload){
+    async generateToken(payload) {
         try {
-            return jsonwebtoken.sign(payload,await this.getPrivateKey(),{algorithm:  "RS256"})
+            return jwt.sign(payload, await getPrivateKey(), { algorithm: "RS256" })
         } catch (error) {
             throw error
         }
     },
     async verifyTokenPayload(token) {
         try {
-            return await jsonwebtoken.verify(token,await getPublicKey(),{ algorithm:  ["RS256"] })
+            return await jwt.verify(token, await getPublicKey(), { algorithm: ["RS256"] })
         } catch (error) {
             throw new ApplicationError('Unauthorised Access')
         }
@@ -42,19 +63,4 @@ module.exports = {
             throw error
         }
     },
-    async getPrivateKey() {
-        try {
-            return await fs.readFile('./privatekey.pem', 'utf-8')
-        } catch (error) {
-            throw error
-        }
-    },
-    async getPublicKey() {
-        try {
-            return await fs.readFile('./publickey.pem', 'utf-8')
-        } catch (error) {
-            throw error
-        }
-    }
-
 }

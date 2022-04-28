@@ -6,8 +6,9 @@ module.exports = async (ctx, next) => {
 
     try {
         const [_, token] = await ctx.headers.authorization.split(" ")
-        const decoded = jwt.verify(token)
-        ctx.userPayload = await verifyTokenPayload(decoded)
+        const decoded = await verifyTokenPayload(token)
+        const payload =await verifyUser(decoded)
+        ctx.userPayload = payload
         /* check payload */
         await next()
     } catch (error) {

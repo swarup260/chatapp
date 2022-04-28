@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
-    "generate:jwt:keys": "node tasks/generatedKey.js"
+    "generate:jwt:keys": "node tasks/generatedKey.js",
+    "knex:new" : "knex migrate:make",
+    "knex:migrate":"knex migrate:latest",
+    "knex:rollback":"knex migrate:rollback"
   },
   "keywords": [],
   "author": "",
@@ -18,9 +21,11 @@
     "@koa/router": "^10.1.1",
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
+    "knex": "^2.0.0",
     "koa": "^2.13.4",
     "koa-body": "^5.0.0",
     "koa-helmet": "^6.1.0",
-    "socket.io": "^4.5.0"
+    "socket.io": "^4.5.0",
+    "sqlite3": "^5.0.6"
   }
 }
