@@ -3,12 +3,12 @@ const router = new Router({
     prefix: '/users'
 })
 
-const JWT = require('../middleware/JWT')
+const UserController = require('../controller/users.controller')
 
 /* routes */
 router
-    .get('/', JWT, (ctx) => (ctx.body = 'user routes'))
-    .post('/', JWT, (ctx) => (ctx.body = 'user routes'))
+    .post('/login', UserController.login)
+    .post('/register', UserController.register)
 
 
 module.exports = router

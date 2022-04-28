@@ -1,5 +1,5 @@
 module.exports = class ApplicationError extends Error {
-    constructor(...params) {
+    constructor(request,...params) {
       // Pass remaining arguments (including vendor specific ones) to parent constructor
       super(...params)
   
@@ -9,6 +9,7 @@ module.exports = class ApplicationError extends Error {
       }
   
       this.name = 'ApplicationError'
+      this.request = request
       this.code = 1001
     }
   }

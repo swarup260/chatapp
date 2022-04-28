@@ -18,7 +18,7 @@ const io = new Server(server,{
 })
 
 /* io handler */
-const socketHandler = require('./src/controller/socket/socketHandler')
+const socketHandler = require('./src/socket')
 io.on('connection', socketHandler)
 
 
