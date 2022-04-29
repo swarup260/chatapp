@@ -1,32 +1,27 @@
-const joi = require('joi')
 const ValidationError = require('../error/ValidationError')
-module.exports = class UserModel {
+
+module.exports = class UsersRepository {
     /**
      * 
-     * @param {Object} param
-     * @param { import("../dataAccess/users.dataAcess") } param.dbInstance
+     * @param {Object} param0 
+     * @param {import("../doa/users.doa")} param0.userDoa
      */
-    constructor({ dbInstance }) {
-        this.dbInstance = dbInstance
+    constructor({ userDoa }) {
+        this.userDoa = userDoa
     }
-
 
     async save(payload) {
         try {
-            const schema = joi.object({
-                username: joi.string().min(5).required(),
-                email: joi.string().required().email(),
-                password: joi.string().min(6).max(20).required(),
-            })
 
-            /* validation payload  */
-            await schema.validateAsync(schema)
+            if (Object.keys(payload).length == 0) {
+                throw new ValidationError(condition, "params missing!")
+            }
 
-            const result = await this.dbInstance.save(payload)
+            const result = await this.userDoa.save(payload)
             if (!result) {
                 throw new ValidationError(payload, "Failed to Save")
             }
-            return result
+            return { id: result[0] }
         } catch (error) {
             throw error
         }
@@ -36,19 +31,19 @@ module.exports = class UserModel {
         try {
 
             if (Object.keys(condition).length == 0) {
-                throw new ValidationError(condition,"params missing!")
+                throw new ValidationError(condition, "params missing!")
             }
 
-            const user = await this.dbInstance.get(condition)
+            const user = await this.userDoa.get(condition)
 
             if (!user) {
-                throw new ValidationError(condition,"User doesn't Exists!")
+                throw new ValidationError(condition, "User doesn't Exists!")
             }
 
             return user[0]
 
         } catch (error) {
-            throw new ValidationError(condition,error)
+            throw new ValidationError(condition, error)
         }
     }
 
@@ -63,12 +58,12 @@ module.exports = class UserModel {
                 throw new ValidationError("payload missing!")
             }
 
-            const result = await this.dbInstance.update({
+            const result = await this.userDoa.update({
                 condition,
                 payload
             })
             if (!result) {
-                throw new ValidationError({payload, condition},"Failed To Updated")
+                throw new ValidationError({ payload, condition }, "Failed To Updated")
             }
 
         } catch (error) {
@@ -82,17 +77,16 @@ module.exports = class UserModel {
             if (Object.keys(condition).length == 0) {
                 throw new ValidationError("params missing!")
             }
-            const result = this.dbInstance.delete(condition)
+            const result = this.userDoa.delete(condition)
             if (!result) {
                 throw new ValidationError(payload, "Failed to delete")
             }
             return result
-            
-            
+
+
 
         } catch (error) {
 
         }
     }
-}
-
+} 

@@ -3,21 +3,29 @@ const router = new Router({
     prefix: '/users'
 })
 
-const UserModel = require('../model/user.model')
-const UserController = require('../controller/users.controller')
 const JWT = require('../middleware/JWT')
-const knex = require('knex')
+const knex = require('../config/db')
 /* initialize the users controller with proper dependencies */
-const dbInstance = knex('users')
-const userModel = new UserModel({ dbInstance })
-const controller = new UserController({ userModel })
+
+const UserHandler = require("../handlers/users.handler")
+const UserService = require("../services/users.service")
+const UsersRepository = require("../repositories/users.repository")
+const UserDoa = require("../doa/users.doa")
+
+const userHandler = new UserHandler({
+    userService: new UserService({
+        usersRepository: new UsersRepository({
+            userDoa: new UserDoa(knex)
+        })
+    })
+})
 
 
 /* routes */
 router
-    .post('/login', controller.login)
-    .post('/register', controller.register)
-    .get('/',JWT,controller.fetchDetail)
+    .post('/login', async (ctx) => (ctx.body = await userHandler.login(ctx.request.body)))
+    .post('/register', async (ctx) => (ctx.body = await userHandler.register(ctx.request.body) ))
+    .get('/', JWT, async (ctx) => (ctx.body = await userHandler.fetchDetail(ctx)))
 
 
 module.exports = router

@@ -4,13 +4,13 @@ module.exports = class UsersDataAccess {
      * @param {import("knex").Knex} KnexInstance 
      */
     constructor(KnexInstance) {
-        this.KnexInstance = KnexInstance
+        this.KnexInstance = KnexInstance('users')
     }
 
 
     async save(payload) {
         try {
-            this.KnexInstance.insert(payload).returning('id')
+            return this.KnexInstance.insert(payload)
         } catch (error) {
             throw error
         }

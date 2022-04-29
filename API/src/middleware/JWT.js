@@ -1,17 +1,27 @@
 const ApplicationError = require("../error/ApplicationError")
-const jwt = require('jsonwebtoken')
-const { verifyTokenPayload } = require('../util/function')
+const { verifyTokenPayload, errorResponseBody } = require('../util/function')
+const UserService = require("../services/users.service")
+const UsersRepository = require("../repositories/users.repository")
+const UserDoa = require("../doa/users.doa")
+const knex = require('../config/db')
+
+const userService = new UserService({
+    usersRepository: new UsersRepository({
+        userDoa: new UserDoa(knex)
+    })
+})
+
+
 
 module.exports = async (ctx, next) => {
 
     try {
         const [_, token] = await ctx.headers.authorization.split(" ")
         const decoded = await verifyTokenPayload(token)
-        const payload =await verifyUser(decoded)
-        ctx.userPayload = payload
+        ctx.userPayload = await userService.verifyUser(decoded)
         /* check payload */
-        await next()
+        return next()
     } catch (error) {
-        throw new ApplicationError("Unauthorised Access")
+        return ctx.body = errorResponseBody(error)
     }
 }

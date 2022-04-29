@@ -63,4 +63,7 @@ module.exports = {
             throw error
         }
     },
+    errorResponseBody(errorObject) {
+        return { status: false, code: errorObject.code, message: errorObject.message }
+    }
 }
