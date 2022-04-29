@@ -6,4 +6,4 @@ npm install knex sqlite3 --save
 https://knexjs.org/#Migrations
 
 
-![API FLOW](API/assest)
+![API FLOW](./assest/appflow.drawio.png)
