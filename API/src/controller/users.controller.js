@@ -1,8 +1,8 @@
 const joi = require('joi')
-const { generateToken , encrpytPassword } = require('../util/function')
+const { generateToken, encrpytPassword } = require('../util/function')
 const ValidationError = require('../error/ValidationError')
 
-module.exports =  class UserController {
+module.exports = class UserController {
 
     /**
      * 
@@ -25,13 +25,13 @@ module.exports =  class UserController {
             /* validation request  */
             await schema.validateAsync(requestBody)
 
-            const { username,password } = requestBody
+            const { username, password } = requestBody
 
             /* user validation */
             /* password validation */
-            
+
             /* jwt token generation */
-            ctx.body = { status: true, message: 'success', token: await generateToken({ username }) }
+            ctx.body = { status: true, message: 'success', token: await generateToken({ username, id }) }
         } catch (error) {
             ctx.body = { status: false, message: error.message }
         }
@@ -50,38 +50,38 @@ module.exports =  class UserController {
                 repassword: joi.string().required()
             })
 
-            const { username,password,repassword,email } = requestBody
+            const { username, password, repassword, email } = requestBody
 
             if (password != repassword) {
-                throw new ValidationError(requestBody,"password mismatch")
+                throw new ValidationError(requestBody, "password mismatch")
             }
 
             /* validation request  */
             await schema.validateAsync(requestBody)
-            
+
             /* hash password */
             const passwordHash = await encrpytPassword(password)
 
             /* save the user */
-            this.userModel.save({
+            const { id } = this.userModel.save({
                 username,
                 email,
-                password:passwordHash,
+                password: passwordHash,
             })
 
 
             /* jwt token generation */
-            ctx.body = { status: true, message: 'success', token: await generateToken({ username }) }
+            ctx.body = { status: true, message: 'success', token: await generateToken({ username, id }) }
         } catch (error) {
             ctx.body = { status: false, message: error.message }
         }
     }
 
-    async fetchDetail(ctx){
+    async fetchDetail(ctx) {
         try {
-            
+
         } catch (error) {
-            
+
         }
     }
 

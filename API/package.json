@@ -6,9 +6,9 @@
   "scripts": {
     "dev": "nodemon index.js",
     "generate:jwt:keys": "node tasks/generatedKey.js",
-    "knex:new" : "knex migrate:make",
-    "knex:migrate":"knex migrate:latest",
-    "knex:rollback":"knex migrate:rollback"
+    "knex:new": "knex migrate:make",
+    "knex:migrate": "knex migrate:latest",
+    "knex:rollback": "knex migrate:rollback"
   },
   "keywords": [],
   "author": "",

@@ -4,7 +4,7 @@ module.exports = class UserModel {
     /**
      * 
      * @param {Object} param
-     * @param { import("knex").Knex } param.dbInstance
+     * @param { import("../dataAccess/users.dataAcess") } param.dbInstance
      */
     constructor({ dbInstance }) {
         this.dbInstance = dbInstance
@@ -22,44 +22,77 @@ module.exports = class UserModel {
             /* validation payload  */
             await schema.validateAsync(schema)
 
-            await this.dbInstance.insert(payload)
+            const result = await this.dbInstance.save(payload)
+            if (!result) {
+                throw new ValidationError(payload, "Failed to Save")
+            }
+            return result
         } catch (error) {
             throw error
         }
     }
 
-    async get(key, val ) {
+    async get(condition) {
         try {
 
-            if (!id) {
-                throw new ValidationError("ID missing!")
+            if (Object.keys(condition).length == 0) {
+                throw new ValidationError(condition,"params missing!")
             }
 
-            const user = await his.dbInstance.select('*').where(key, val)
+            const user = await this.dbInstance.get(condition)
 
             if (!user) {
-                throw new ValidationError("User doesn't Exists!")
+                throw new ValidationError(condition,"User doesn't Exists!")
             }
 
             return user[0]
 
         } catch (error) {
-            throw new ValidationError(error)
+            throw new ValidationError(condition,error)
         }
     }
 
-    async update(payload, id) {
+    async update(payload, condition) {
+        try {
 
+            if (Object.keys(condition).length == 0) {
+                throw new ValidationError("params missing!")
+            }
+
+            if (Object.keys(payload).length == 0) {
+                throw new ValidationError("payload missing!")
+            }
+
+            const result = await this.dbInstance.update({
+                condition,
+                payload
+            })
+            if (!result) {
+                throw new ValidationError({payload, condition},"Failed To Updated")
+            }
+
+        } catch (error) {
+            throw error
+        }
     }
 
-    async delete(id) {
+    async delete(condition) {
+        try {
 
+            if (Object.keys(condition).length == 0) {
+                throw new ValidationError("params missing!")
+            }
+            const result = this.dbInstance.delete(condition)
+            if (!result) {
+                throw new ValidationError(payload, "Failed to delete")
+            }
+            return result
+            
+            
+
+        } catch (error) {
+
+        }
     }
-
-
-
-
-
-
 }
 
