@@ -1,10 +1,9 @@
-import Button from '@mui/material/Button'
+import SideNavbar from "./components/Header/SideNavbar";
 
 export default function App() {
     return (
         <>
-            <h1 className="text-3xl font-bold underline">HELLO REACT</h1>
-            <Button variant="contained">Hello World</Button>
+            <SideNavbar />
         </>
     );
 };
