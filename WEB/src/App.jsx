@@ -1,9 +1,12 @@
-import SideNavbar from "./components/Header/SideNavbar";
+import Login from "./pages/Login";
+import Home from "./pages/Home";
 
 export default function App() {
-    return (
-        <>
-            <SideNavbar />
-        </>
-    );
-};
+  const isLogin = false;
+
+  if (!isLogin) {
+    return <Login />;
+  }
+
+  return <Home />;
+}
