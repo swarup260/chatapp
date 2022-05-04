@@ -34,7 +34,7 @@ export default function Login() {
         await schema.validateAsync(email);
       } catch (error) {
         setEmailError({ isError: true, errorMessage: error.message })
-        
+        return
       }
 
       try {
