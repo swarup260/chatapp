@@ -1,118 +1,97 @@
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
+import CircularProgress from "@mui/material/CircularProgress";
 import { Link } from "react-router-dom";
-import Joi from "joi"
-import { useState } from "react";
+import Joi from "joi";
 
 import BaseContainer from "../components/Login/BaseContainer";
-import { useDispatch } from "react-redux";
-import { register } from "../store/auth";
+import InputField from "../components/InputField";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  SET_IS_LOADING,
+  SET_IS_LOGIN,
+  SET_TOKEN,
+  isApiLoading,
+} from "../store/auth";
 
 export default function SignUp() {
 
-  const [emailError, setEmailError] = useState({ isError: false, errorMessage: '' })
-  const [usernameError, setUsernameError] = useState({ isError: false, errorMessage: '' })
-  const [passwordError, setPasswordError] = useState({ isError: false, errorMessage: '' })
-  const [repasswordError, setRepasswordError] = useState({ isError: false, errorMessage: '' })
+  const dispatch = useDispatch();
 
+  const isLoading = useSelector(isApiLoading);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     try {
       event.preventDefault();
       const data = new FormData(event.currentTarget);
-      const email = data.get("email")
-      const username = data.get("username")
-      const password = data.get("password")
-      const repassword = data.get("repassword")
+      const email = data.get("email");
+      const username = data.get("username");
+      const password = data.get("password");
+      const repassword = data.get("repassword");
 
+      /* API CALL */
 
-      try {
-        const schema = Joi.string().email({ tlds: { allow: false } }).required();
-        await schema.validateAsync(email);
-      } catch (error) {
-        setEmailError({ isError: true, errorMessage: error.message })
-        return
+      dispatch(SET_IS_LOADING(true));
+      const result = await axios.post(endpoints.LOGIN, {
+        email,
+        password,
+        repassword,
+        username,
+      });
+
+      if (result.status != 200) {
+        throw new Error("API ERROR");
       }
 
-
-      try {
-        const schema = Joi.string().required({ tlds: { allow: false } }).min(5);
-        await schema.validateAsync(username);
-      } catch (error) {
-        setUsernameError({ isError: true, errorMessage: error.message })
-        return
+      if (!result.data.status) {
+        throw new Error(result.data.message);
       }
 
-      try {
-        const schema = Joi.string().required({ tlds: { allow: false } }).min(5);
-        await schema.validateAsync(password);
-      } catch (error) {
-        setPasswordError({ isError: true, errorMessage: error.message })
-        return
-      }
-
-      try {
-        const schema = Joi.string().required({ tlds: { allow: false } }).min(5);
-        await schema.validateAsync(repassword);
-      } catch (error) {
-        setRepasswordError({ isError: true, errorMessage: error.message })
-        return
-      }
-
-
-      dispatch(register({ email, username, password, repassword }))
+      dispatch(SET_TOKEN(result.data.token));
+      dispatch(SET_IS_LOGIN(true));
+      dispatch(SET_IS_LOADING(false));
+      SET_DAILOGBOX_STATE(func.setSuccessAlert(result.data.message));
     } catch (error) {
-      console.log({ error })
+      dispatch(SET_DAILOGBOX_STATE(func.setErrorAlert(error)));
     }
   };
 
   return (
     <BaseContainer title="Sign Up">
       <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-        <TextField
-          error={usernameError.isError}
-          helperText={usernameError.errorMessage}
-          margin="normal"
-          required
-          fullWidth
+        <InputField
+          validate={Joi.string()
+            .required({ tlds: { allow: false } })
+            .min(5)}
           id="username"
           label="Username"
           name="username"
           autoComplete="username"
-          autoFocus
         />
-        <TextField
-          error={emailError.isError}
-          helperText={emailError.errorMessage}
-          margin="normal"
-          required
-          fullWidth
+        <InputField
           id="email"
           label="Email Address"
           name="email"
           autoComplete="email"
-          autoFocus
+          validate={Joi.string()
+            .email({ tlds: { allow: false } })
+            .required()}
         />
-        <TextField
-          error={passwordError.isError}
-          helperText={passwordError.errorMessage}
-          margin="normal"
-          required
-          fullWidth
+        <InputField
+          validate={Joi.string()
+            .required({ tlds: { allow: false } })
+            .min(5)}
           name="password"
           label="Password"
           type="password"
           id="password"
           autoComplete="current-password"
         />
-        <TextField
-          error={repasswordError.isError}
-          helperText={repasswordError.errorMessage}
-          margin="normal"
-          required
-          fullWidth
+        <InputField
+          validate={Joi.string()
+            .required({ tlds: { allow: false } })
+            .min(5)}
           name="repassword"
           label="RePassword"
           type="password"
@@ -125,7 +104,7 @@ export default function SignUp() {
           variant="contained"
           sx={{ mt: 3, mb: 2 }}
         >
-          Sign Up
+          {!isLoading ? "Sign Up" : <CircularProgress color="secondary" />}
         </Button>
         <Grid container justifyContent="flex-end">
           <Grid item>

@@ -10,15 +10,15 @@ const slice = createSlice({
         }
     },
     reducers: {
-        setDailogBox: (state, { payload }) => {
-            state.dailog = payload
+        SET_DAILOGBOX_STATE: (state, { payload }) => {
+            return { ...state, dailog: payload }
         }
     }
 })
 
 
 export const {
-    setDailogBox
+    SET_DAILOGBOX_STATE
 } = slice.actions;
 
 

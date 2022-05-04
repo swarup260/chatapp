@@ -1,36 +1,30 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { useDispatch } from "react-redux";
-import { setDailogBox } from "./app";
 
 
 const slice = createSlice({
     name: "auth",
     initialState: {
         token: "",
-        isLogin: false
+        isLogin: false,
+        isLoading: false
     },
     reducers: {
-        login: async (state, { payload }) => {
-            const dispatch = useDispatch()
-            try {
-                
-            } catch (error) {
-                // dispatch(setDailogBox({ }))
-            }
+        SET_TOKEN(state,{ payload }){
+            return { ...state,token:payload}
         },
-        register: async (state, { payload }) => {
-            try {
-                
-            } catch (error) {
-                // dispatch(setDailogBox({ }))
-            }
+        SET_IS_LOGIN(state,{ payload }){
+            return { ...state,isLogin:payload }
+        },
+        SET_IS_LOADING(state,{ payload }){
+            return { ...state,isLoading:payload }
         }
     }
 })
 
 export const {
-    login,
-    register
+    SET_TOKEN,
+    SET_IS_LOGIN,
+    SET_IS_LOADING
 } = slice.actions;
 
 
@@ -39,3 +33,4 @@ export default slice.reducer;
 
 
 export const isUserLogin = ({ entities }) => entities.auth.isLogin
+export const isApiLoading = ({ entities }) => entities.auth.isLoading
