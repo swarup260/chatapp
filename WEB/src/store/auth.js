@@ -1,4 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { useDispatch } from "react-redux";
+import { setDailogBox } from "./app";
+
 
 const slice = createSlice({
     name: "auth",
@@ -7,11 +10,20 @@ const slice = createSlice({
         isLogin: false
     },
     reducers: {
-        login: async () => {
-
+        login: async (state, { payload }) => {
+            const dispatch = useDispatch()
+            try {
+                
+            } catch (error) {
+                // dispatch(setDailogBox({ }))
+            }
         },
-        register: async () => {
-
+        register: async (state, { payload }) => {
+            try {
+                
+            } catch (error) {
+                // dispatch(setDailogBox({ }))
+            }
         }
     }
 })
@@ -23,3 +35,7 @@ export const {
 
 
 export default slice.reducer;
+
+
+
+export const isUserLogin = ({ entities }) => entities.auth.isLogin
