@@ -35,7 +35,6 @@ module.exports = class UsersRepository {
             }
 
             const user = await this.userDoa.get(condition)
-
             if (!user) {
                 throw new ValidationError(condition, "User doesn't Exists!")
             }

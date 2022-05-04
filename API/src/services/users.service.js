@@ -27,6 +27,9 @@ module.exports = class UserService {
 
             /* user validation */
             const user = await this.usersRepository.get({ email })
+            if (user === undefined) {
+                throw new ValidationError(requestObject, "User Doesn't Exists !")
+            }
             /* password validation */
             if (!verifyPassword(password, user.password)) {
                 throw new ValidationError(requestObject, "Password Mismatch!")
