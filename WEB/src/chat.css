@@ -5,6 +5,7 @@
   min-height: 100%;
   padding: 15px 30px;
   margin: 0 auto;
+  overflow-y: scroll;
   background-color: #fff;
   transform: rotate(180deg);
   direction: rtl;
@@ -44,7 +45,7 @@
 .chat__message-own {
   color: #fff;
   margin-left: auto;
-  background-color: #6aa04b;
+  background-color: #00a9de;
 }
 .chat__message-own:after {
   width: 19px;

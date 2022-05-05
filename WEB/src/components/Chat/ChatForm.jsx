@@ -7,11 +7,10 @@ import InputField from "../InputField";
 export default function ChataForm() {
   return (
     <Box
-      sx={{ bgcolor: "#cfe8fc", height: "10vh" }}
+      sx={{ bgcolor: "#cfe8fc", height: "10vh",maxWidth:"800px",width:"100%",margin:"0 auto" }}
       component="form"
       onSubmit={() => {}}
       noValidate
-      className="left-0 right-0 bottom-0"
     >
       <div className="flex justify-between">
         <InputField
