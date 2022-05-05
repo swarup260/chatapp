@@ -36,7 +36,8 @@ export const apiCall = async ({ endpoint, data, dispatch }) => {
         dispatch(SET_IS_LOADING(false));
         
     } catch (error) {
-        dispatch(SET_DAILOGBOX_STATE(func.setErrorAlert(error.message)));
+        dispatch(SET_DAILOGBOX_STATE(func.setErrorAlert(error)));
+        dispatch(SET_IS_LOADING(false));
     }
 }
 

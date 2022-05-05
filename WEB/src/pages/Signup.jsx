@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import Joi from "joi";
 
 import BaseContainer from "../components/Login/BaseContainer";
+import SubmitButton from "../components/Login/SubmitButton";
 import InputField from "../components/InputField";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -93,14 +94,7 @@ export default function SignUp() {
           id="Repassword"
           autoComplete="current-password"
         />
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-        >
-          {!isLoading ? "Sign Up" : <CircularProgress color="secondary" />}
-        </Button>
+        <SubmitButton title={"Sign Up"} isLoading={isLoading} />
         <Grid container justifyContent="flex-end">
           <Grid item>
             <Link to="/">Already have an account? Sign in</Link>

@@ -3,11 +3,11 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import CircularProgress from "@mui/material/CircularProgress";
 import { Link } from "react-router-dom";
 import Joi from "joi";
 
 import BaseContainer from "../components/Login/BaseContainer";
+import SubmitButton from "../components/Login/SubmitButton";
 import InputField from "../components/InputField";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -68,15 +68,7 @@ export default function Login() {
           control={<Checkbox value="remember" color="primary" />}
           label="Remember me"
         />
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-          loading="true"
-        >
-          {!isLoading ? "Sign In" : <CircularProgress color="secondary" />}
-        </Button>
+        <SubmitButton title={"Sign In"} isLoading={isLoading} />
         <Grid container>
           <Grid item>
             <Link to="/sign-up">{"Don't have an account? Sign Up"}</Link>
