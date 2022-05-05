@@ -15,7 +15,7 @@ import {
 } from "../store/auth";
 import { SET_DAILOGBOX_STATE } from "../store/app";
 import func from "../utils/functions";
-import { authApiCall } from "../config/api";
+import { apiCall,endpoints } from "../config/api";
 
 export default function Login() {
   const isLoading = useSelector(isApiLoading);
@@ -31,7 +31,12 @@ export default function Login() {
 
       /* API CALL */
 
-      await authApiCall({ email, password }, dispatch);
+      await apiCall({
+        endpoint: endpoints.LOGIN,
+        data: { email, password },
+        dispatch
+      });
+
     } catch (error) {
       dispatch(SET_DAILOGBOX_STATE(func.setErrorAlert(error)));
     }

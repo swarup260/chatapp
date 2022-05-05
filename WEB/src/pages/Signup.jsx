@@ -9,11 +9,12 @@ import BaseContainer from "../components/Login/BaseContainer";
 import InputField from "../components/InputField";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  SET_IS_LOADING,
-  SET_IS_LOGIN,
-  SET_TOKEN,
-  isApiLoading,
+  isApiLoading
 } from "../store/auth";
+
+import { SET_DAILOGBOX_STATE } from "../store/app";
+import func from "../utils/functions";
+import { apiCall, endpoints } from "../config/api";
 
 export default function SignUp() {
 
@@ -25,33 +26,27 @@ export default function SignUp() {
     try {
       event.preventDefault();
       const data = new FormData(event.currentTarget);
+      console.log(data)
       const email = data.get("email");
       const username = data.get("username");
       const password = data.get("password");
       const repassword = data.get("repassword");
 
-      /* API CALL */
+      if (password != repassword) {
+        throw new Error("Password Mismatch")
+      }
 
-      dispatch(SET_IS_LOADING(true));
-      const result = await axios.post(endpoints.LOGIN, {
-        email,
-        password,
-        repassword,
-        username,
+      /* API CALL */
+      await apiCall({
+        endpoint: endpoints.REGISTER,
+        data: {
+          email,
+          password,
+          repassword,
+          username,
+        }, dispatch
       });
 
-      if (result.status != 200) {
-        throw new Error("API ERROR");
-      }
-
-      if (!result.data.status) {
-        throw new Error(result.data.message);
-      }
-
-      dispatch(SET_TOKEN(result.data.token));
-      dispatch(SET_IS_LOGIN(true));
-      dispatch(SET_IS_LOADING(false));
-      SET_DAILOGBOX_STATE(func.setSuccessAlert(result.data.message));
     } catch (error) {
       dispatch(SET_DAILOGBOX_STATE(func.setErrorAlert(error)));
     }
