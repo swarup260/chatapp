@@ -1,25 +1,15 @@
 /* Dependencies  */
-const http = require('http')
-const { Server } = require('socket.io')
+const { createServer } = require('http')
 
 /* Constant */
 const PORT = process.env.PORT || 5000
 
+/* Server Initialize */
 const app = require('./src/app')
-const server = http.createServer(app.callback())
+const socketRouter = require('./src/routes/socket.routes')
+const server = createServer(app.callback())
+const io = require('./src/createSocket')(server)
 
-/* socket setup */
-const io = new Server(server,{
-    cors: {
-        origin: "*",
-        methods: ["GET", "POST"],
-        credentials: true
-    }
-})
+io.on("connection", socketRouter)
 
-/* io handler */
-const socketHandler = require('./src/socket')
-io.on('connection', socketHandler)
-
-
-server.listen(PORT, () => console.log(`Server RUNNING AT http://127.0.0.1:${PORT}/`))
+server.listen(PORT, () => console.log(`Server RUNNING AT http://127.0.0.1:${PORT}`))
