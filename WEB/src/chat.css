@@ -1,7 +1,7 @@
 .chat {
   width: 100%;
-  max-width: 800px;
-  height: calc(100vh - 50px);
+  width: 800px;
+  height: 90vh;
   min-height: 100%;
   padding: 15px 30px;
   margin: 0 auto;

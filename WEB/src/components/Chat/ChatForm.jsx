@@ -7,17 +7,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { socketInstance } from "../../store/socket";
 import { userData } from "../../store/app";
 import { socketEvent } from "../../config/socket";
+import { useState } from "react";
 
 export default function ChataForm() {
+  const [messageBody, setMessageBody] = useState("");
 
+  const socket = useSelector(socketInstance);
+  const user = useSelector(userData);
+  const { id } = user;
+  const dispatch = useDispatch();
 
-  const socket = useSelector(socketInstance)
-  const user = useSelector(userData)
-  const { id } = user
-  const dispatch = useDispatch()
-
-
-
+  const onChangeHandler = (e) => setMessageBody(e.target.value);
 
   const sendMessageHandler = async (event) => {
     try {
@@ -30,18 +30,25 @@ export default function ChataForm() {
 
       socket.emit(socketEvent.SEND_MESSAGE, {
         message,
-        id
-      })
+        id,
+      });
+
+      setMessageBody("")
 
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
-
+  };
 
   return (
     <Box
-      sx={{ bgcolor: "#cfe8fc", height: "10vh", maxWidth: "800px", width: "100%", margin: "0 auto" }}
+      sx={{
+        bgcolor: "#cfe8fc",
+        height: "10vh",
+        maxWidth: "800px",
+        width: "100%",
+        margin: "0 auto",
+      }}
       component="form"
       onSubmit={sendMessageHandler}
       noValidate
@@ -55,6 +62,8 @@ export default function ChataForm() {
           size="small"
           sx={{ margin: "14px" }}
           validate={Joi.string().required()}
+          onChange={onChangeHandler}
+          value={messageBody}
         />
         <Button
           variant="contained"

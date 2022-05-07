@@ -1,15 +1,16 @@
 import Box from "@mui/material/Box";
 import { useRef, useEffect } from "react";
+import { useSelector } from "react-redux";
 import "../../chat.css";
+import { chatRoomMessageList } from "../../store/chat";
 import Message from "./Message";
 
 export default function MessageListWindow() {
+
   const messagesEndRef = useRef(null);
 
-  const messageList = new Array(50).fill(undefined).map((_, index) => ({
-    message: `Message #${index}`,
-    userID: index % 2 == 0 ? 1 : 0,
-  }));
+  const messageList = useSelector(chatRoomMessageList("public"));
+
 
   useEffect(() => {
     messagesEndRef.current.scrollTo({
@@ -19,9 +20,7 @@ export default function MessageListWindow() {
   }, [messageList]);
 
   return (
-    <Box
-      ref={messagesEndRef}
-    >
+    <Box ref={messagesEndRef}>
       <div className="chat">
         <div className="chat__wrapper">
           {messageList.map((messageObject, index) => (
