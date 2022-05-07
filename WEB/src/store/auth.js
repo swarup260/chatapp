@@ -5,32 +5,22 @@ const slice = createSlice({
     name: "auth",
     initialState: {
         token: "",
-        isLogin: false,
-        isLoading: false
+        isLogin: false
     },
     reducers: {
-        SET_TOKEN(state,{ payload }){
-            return { ...state,token:payload}
-        },
-        SET_IS_LOGIN(state,{ payload }){
-            return { ...state,isLogin:payload }
-        },
-        SET_IS_LOADING(state,{ payload }){
-            return { ...state,isLoading:payload }
-        }
+        SET_TOKEN: (state, { payload }) => ({ ...state, token: payload }),
+        SET_IS_LOGIN: (state, { payload }) => ({ ...state, isLogin: payload }),
     }
 })
 
+/* Export All ActionType */
 export const {
     SET_TOKEN,
-    SET_IS_LOGIN,
-    SET_IS_LOADING
+    SET_IS_LOGIN
 } = slice.actions;
 
-
+/* Export  reducer */
 export default slice.reducer;
 
-
-
+/* Export All Selector */
 export const isUserLogin = ({ entities }) => entities.auth.isLogin
-export const isApiLoading = ({ entities }) => entities.auth.isLoading

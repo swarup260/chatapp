@@ -11,7 +11,7 @@ import InputField from "../components/InputField";
 import { useDispatch, useSelector } from "react-redux";
 import {
   isApiLoading
-} from "../store/auth";
+} from "../store/app";
 
 import { SET_DAILOGBOX_STATE } from "../store/app";
 import func from "../utils/functions";

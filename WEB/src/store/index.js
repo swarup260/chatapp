@@ -9,14 +9,16 @@ import {
     PURGE,
     REGISTER,
 } from 'redux-persist';
+import { SET_SOCKET } from "./socket";
 
 export default function () {
     return configureStore({
         reducer,
         middleware: (getDefaultMiddleware) => getDefaultMiddleware({
             serializableCheck: {
-                ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+                ignoredActions: [SET_SOCKET.type,FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
             }
+            // serializableCheck: false
         })
     })
 }
