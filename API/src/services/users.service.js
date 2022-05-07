@@ -31,7 +31,7 @@ module.exports = class UserService {
                 throw new ValidationError(requestObject, "User Doesn't Exists !")
             }
             /* password validation */
-            if (!verifyPassword(password, user.password)) {
+            if (!(await verifyPassword(password, user.password))) {
                 throw new ValidationError(requestObject, "Password Mismatch!")
             }
 
