@@ -10,6 +10,12 @@ const socketRouter = require('./src/routes/socket.routes')
 const server = createServer(app.callback())
 const io = require('./src/createSocket')(server)
 
-io.on("connection", socketRouter)
+
+
+io.of("/notification").on("connection",(socket) => {
+    console.log("USER CONNECTED IN NAMESPACE")
+    socket.on("CREATE_NEW_ROOM", (val) => console.log({ val , namespace:"NAMESPACE"}))
+})
+io.on("connection", socketRouter(io))
 
 server.listen(PORT, () => console.log(`Server RUNNING AT http://127.0.0.1:${PORT}`))
