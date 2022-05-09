@@ -13,6 +13,7 @@ export default function Home() {
 
   useEffect(() => initialSocketInstance({ dispatch }), []);
 
+
   useEffect(() =>{
     /* fetch user room  */
     /* if null show modal  */
