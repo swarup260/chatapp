@@ -16,7 +16,6 @@ const userRoutes = require('./routes/users.routes')
 
 /* set routes */
 app.use(userRoutes.routes()).use(userRoutes.allowedMethods())
-app.use(async ctx => (ctx.body = 'Hello World'))
 
 
 module.exports = app

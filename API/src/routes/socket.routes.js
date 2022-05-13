@@ -1,23 +1,13 @@
 
-const { eventEnum, channels } = require("../config/socketEventEnum")
-const consoleEmitter = require("../events/console.event")
-
-
-
 /**
  * 
- * @param {import("socket.io")} socket 
+ * @param {import("socket.io").Server} io 
  */
-const socketRouter = (io) => (socket) => {
+module.exports = function socketRoute(io) {
 
-    console.log(io.of(`/${channels.NOTIFICATION}`).sockets.size)
-    console.log("USER CONNECTED")
-    /* message handler */
-    /* notifed handler */
-    socket.on(eventEnum.SEND_MESSAGE, (data) => consoleEmitter.emit("print", data))
+    io.on("connection", () => console.log("USER CONNECTED ON MAIN CHANNEL"))
 
-    socket.on(eventEnum.CREATE_NEW_ROOM, (val) => consoleEmitter.emit("print",{ val, namespace: "public" }))
+    io.of("/notification").on("connection", () => console.log("USER CONNECTED ON NOTIFICATION CHANNEL"))
+
+    io.of("/chat").on("connection", () => console.log("USER CONNECTED ON CHAT CHANNEL"))
 }
-
-
-module.exports = socketRouter
