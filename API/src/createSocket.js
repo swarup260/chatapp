@@ -1,8 +1,7 @@
 const { Server } = require('socket.io')
 const { createAdapter } = require("@socket.io/mongo-adapter")
-const initAdapter = require('./config/initSocketAdapter')
 const socketRoutes = require('./routes/socket.routes')
-const { default: mongoose } = require('mongoose')
+const mongoose = require('mongoose')
 
 module.exports = function (server) {
     /* socket setup */
@@ -16,12 +15,14 @@ module.exports = function (server) {
 
 
     /* Socket Adapter Setup   */
-
-    initAdapter().then((mongoCollection) => {
-        io.adapter(createAdapter(mongoose));
-    }).catch((err) => {
-        throw err
-    });
+    const collection = mongoose.connection.createCollection("chatCapped", {
+        capped: true,
+        size: 1e6
+    })
+    collection
+        .then(db => io.adapter(createAdapter(db)))
+        .catch(err => console.error(err))
+    // io.adapter(createAdapter(mongoose.connection.createCollection("chat")));
 
     socketRoutes(io)
 }
