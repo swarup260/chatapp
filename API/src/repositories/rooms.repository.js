@@ -1,10 +1,10 @@
 const ValidationError = require('../error/ValidationError')
 
-module.exports = class MessageRepository {
+module.exports = class RoomsRepository {
     /**
      * 
      * @param {Object} param0 
-     * @param {import("../doa/message.dao")} param0.Doa
+     * @param {import("../doa/rooms.doa")} param0.Doa
      */
     constructor({ Doa }) {
         this.Doa = Doa

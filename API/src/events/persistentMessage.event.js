@@ -1,5 +1,5 @@
 const { EventEmitter } = require('node:events')
-const PersistentMessageSchema = require('../schemas/persistentMessage.schema')
+const PersistentMessageSchema = require('../schemas/message.schema')
 
 const EVENTS = {
     SAVE: 'SAVE',

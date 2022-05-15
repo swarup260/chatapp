@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
+const { Schema } = require("mongoose")
 
-
-const persistentMessageSchema = {
+const messageSchema = {
     body: {
         type: String,
         required: true,
@@ -10,10 +10,15 @@ const persistentMessageSchema = {
         type: Number,
         required: true
     },
+    room: {
+        type:Schema.Types.ObjectId,
+        ref:"rooms"
+    },
     createdAt: {
         type: Date,
         default: Date.now(),
     }
+    
 }
 
-module.exports = mongoose.model("messages", persistentMessageSchema, "messages");
+module.exports = mongoose.model("messages", messageSchema, "messages");
