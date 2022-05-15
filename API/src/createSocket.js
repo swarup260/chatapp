@@ -21,7 +21,14 @@ module.exports = function (server) {
     })
     collection
         .then(db => io.adapter(createAdapter(db)))
-        .catch(err => console.error(err))
+        .catch(error => {
+            /* Collection already exists */
+           if (error.code == 48) {
+               io.adapter(createAdapter(mongoose.connection.collection("chatCapped")))
+               return;
+           } 
+           console.log(error)
+        })
     // io.adapter(createAdapter(mongoose.connection.createCollection("chat")));
 
     socketRoutes(io)
