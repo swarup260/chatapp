@@ -15,7 +15,7 @@ const slice = createSlice({
                     messageList: []
                 }
             }
-            const newRoomList = [...roomList,payload]
+            let newRoomList = roomList.indexOf(payload) > 0 ? [...roomList] : [...roomList,payload]
 
             return { ...state, rooms: { ...rooms, newRoom }, roomList:newRoomList }
         },

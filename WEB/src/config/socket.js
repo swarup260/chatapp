@@ -15,7 +15,8 @@ export const socketEvent = {
     RECIEVE_MESSAGE: 'RECIEVE_MESSAGE',
     BOARDCAST_MESSAGE: 'BOARDCAST_MESSAGE',
     USER_CONNECTED: 'USER_CONNECTED',
-    CREATE_NEW_ROOM: 'CREATE_NEW_ROOM'
+    CREATE_NEW_ROOM: 'CREATE_NEW_ROOM',
+    JOIN_ROOM: "JOIN_ROOM"
 }
 
 
@@ -45,6 +46,8 @@ export const initialSocketInstance = ({ dispatch }) => {
             dispatch(SET_DAILOGBOX_STATE(func.setSuccessAlert("CONNECTED !!!")));
             dispatch(SET_IS_LOADING(false));
         })
+
+
 
         return () => socket.close();
     } catch (error) {
