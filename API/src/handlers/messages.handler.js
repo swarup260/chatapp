@@ -14,7 +14,7 @@ module.exports = class MessageHandler {
     /**
      * 
      * @param {Object} param 
-     * @param {import("../services/messages.service")} param.messageService 
+     * @param {import("../services/message.service")} param.messageService 
      */
     constructor({ messageService }) {
         this.messageService = messageService

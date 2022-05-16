@@ -2,9 +2,14 @@ const mongoose = require("mongoose");
 
 
 const roomSchema= {
-    rooms: {
+    name: {
         type: String,
         required: true,
+        unique: true
+    },
+    status: {
+        type: Boolean,
+        default: true
     },
     createdAt: {
         type: Date,
