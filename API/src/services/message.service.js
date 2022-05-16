@@ -15,16 +15,17 @@ module.exports = class MessageService {
         try {
             /* joi string validation */
             const schema = joi.object({
-                name: joi.string().min(3).max(10)
+                body: joi.string(),
+                userID: joi.number(),
+                room: joi.string()
             })
             await schema.validateAsync(requestObject)
 
-            const room = await this.roomsRepository.save({
-                ...requestObject,
-                status: true
+            const newMessage = await this.messageRepository.save({
+                ...requestObject
             })
 
-            return room
+            return newMessage
 
         } catch (error) {
             throw error
@@ -36,24 +37,28 @@ module.exports = class MessageService {
 
             /* joi string validation */
             const schema = joi.object({
-                name: joi.string().min(3).max(10)
+                body: joi.string().min(3).max(10),
+                id: joi.string()
             })
             await schema.validateAsync(requestObject)
 
-            const room = this.roomsRepository.get({ id: id, status: true })
-            if (!room) {
-                throw new ValidationError("Room Not Found")
+            const message = this.messageRepository.get({ id })
+            if (!message) {
+                throw new ValidationError("message Not Found")
             }
 
-            return this.roomsRepository.update({ id: id }, { ...requestObject })
+
+            const { id, body } = requestObject
+
+            return this.messageRepository.update({ id }, { body })
         } catch (error) {
             throw error
         }
     }
 
-    async getAll() {
+    async getAll({ filter, limit, offset }) {
         try {
-            return await this.roomsRepository.getAll({ status: true })
+            return await this.messageRepository.getAll({ filter, limit, offset })
         } catch (error) {
             throw error
         }
@@ -61,7 +66,7 @@ module.exports = class MessageService {
 
     async get(id) {
         try {
-            return this.roomsRepository.get({ id: id, status: true })
+            return this.messageRepository.get({ id })
         } catch (error) {
             throw error
         }
@@ -69,17 +74,24 @@ module.exports = class MessageService {
 
     async delete(id) {
         try {
-            const room = this.roomsRepository.get({ id: id, status: true })
-            if (!room) {
-                throw new ValidationError("Room Not Found")
+            const message = this.messageRepository.get({ id })
+            if (!message) {
+                throw new ValidationError("message Not Found")
             }
 
-            return this.roomsRepository.update({ ObjectId: id }, { status: false })
+            return this.messageRepository.delete({ id })
 
         } catch (error) {
             throw error
         }
     }
 
+    async deleteAll({ filter }) {
+        try {
+            return this.messageRepository.deleteAll({ filter })
+        } catch (error) {
+            throw error
+        }
+    }
 
 }

@@ -15,16 +15,14 @@ module.exports = class RoomsService {
         try {
             /* joi string validation */
             const schema = joi.object({
-                name: joi.string().min(3).max(10)
+                name: joi.string().min(3).max(10).required()
             })
             await schema.validateAsync(requestObject)
 
-            const room = await this.roomsRepository.save({
+            return await this.roomsRepository.save({
                 ...requestObject,
                 status: true
             })
-
-            return room
 
         } catch (error) {
             throw error
@@ -36,24 +34,31 @@ module.exports = class RoomsService {
 
             /* joi string validation */
             const schema = joi.object({
-                name: joi.string().min(3).max(10)
+                update: joi.object({
+                    name: joi.string()
+                }),
+                id: joi.string().required()
             })
+
             await schema.validateAsync(requestObject)
 
-            const room = this.roomsRepository.get({ id: id, status: true })
+            const { id, udpate } = requestObject
+
+            const room = this.roomsRepository.get({ id, status: true })
+
             if (!room) {
                 throw new ValidationError("Room Not Found")
             }
 
-            return this.roomsRepository.update({ id: id }, { ...requestObject })
+            return this.roomsRepository.update({ id }, { ...udpate })
         } catch (error) {
             throw error
         }
     }
 
-    async getAll() {
+    async getAll({ filter, limit, offset }) {
         try {
-            return await this.roomsRepository.getAll({ status: true })
+            return await this.roomsRepository.getAll({ filter, limit, offset })
         } catch (error) {
             throw error
         }
@@ -69,7 +74,7 @@ module.exports = class RoomsService {
 
     async delete(id) {
         try {
-            const room = this.roomsRepository.get({ id: id, status: true })
+            const room = this.roomsRepository.get({ id, status: true })
             if (!room) {
                 throw new ValidationError("Room Not Found")
             }
