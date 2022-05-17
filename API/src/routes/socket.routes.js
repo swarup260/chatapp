@@ -22,7 +22,7 @@ module.exports = function socketRoute(io) {
 
         socket.on("CREATE_NEW_ROOM",val => console.log(val))
         socket.on("JOIN_ROOM",val => console.log(val))
-        socket.on("SEND_MESSAGE",val => socket.emit("RECIEVE_MESSAGE",val))
+        socket.on("SEND_MESSAGE",val => socket.broadcast.emit("RECIEVE_MESSAGE",val))
 
     })
 }
