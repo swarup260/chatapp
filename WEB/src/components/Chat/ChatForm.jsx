@@ -13,8 +13,7 @@ export default function ChataForm() {
   const [messageBody, setMessageBody] = useState("");
 
   const socket = useSelector(socketInstance);
-  const user = useSelector(userData);
-  const { id } = user;
+  const { id } = useSelector(userData);
   const dispatch = useDispatch();
 
   const onChangeHandler = (e) => setMessageBody(e.target.value);

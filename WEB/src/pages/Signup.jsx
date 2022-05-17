@@ -1,7 +1,7 @@
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import CircularProgress from "@mui/material/CircularProgress";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Joi from "joi";
 
@@ -20,6 +20,7 @@ import { apiCall, endpoints } from "../config/api";
 export default function SignUp() {
 
   const dispatch = useDispatch();
+  let navigate = useNavigate()
 
   const isLoading = useSelector(isApiLoading);
 
@@ -48,6 +49,7 @@ export default function SignUp() {
         }, dispatch
       });
 
+      navigate("/", { replace: true });
     } catch (error) {
       dispatch(SET_DAILOGBOX_STATE(func.setErrorAlert(error)));
     }
