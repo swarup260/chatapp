@@ -17,7 +17,7 @@ const slice = createSlice({
             }
             let newRoomList = roomList.indexOf(payload) > 0 ? [...roomList] : [...roomList,payload]
 
-            return { ...state, rooms: { ...rooms, newRoom }, roomList:newRoomList }
+            return { ...state, rooms: { ...rooms, ...newRoom }, roomList:newRoomList }
         },
         SET_ROOM_MESSAGE: (state, { payload }) => {
             const rooms = state.rooms
@@ -42,6 +42,6 @@ export const {
 export default slice.reducer;
 
 /* Export All Selector */
-export const chatRoomMessageList = roomName => ({ entities }) => (entities.chat.rooms[roomName] || [])
+export const chatRoomMessageList = roomName => ({ entities }) => (entities.chat.rooms[roomName].messageList || [])
 export const allRooms = ({ entities }) => entities.chat.rooms
 export const roomList = ({ entities }) => entities.chat.roomList

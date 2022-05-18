@@ -8,6 +8,7 @@ import { socketInstance } from "../../store/socket";
 import { userData } from "../../store/app";
 import { socketEvent } from "../../config/socket";
 import { useState } from "react";
+import { SET_ROOM_MESSAGE } from "../../store/chat";
 
 export default function ChataForm() {
   const [messageBody, setMessageBody] = useState("");
@@ -22,15 +23,18 @@ export default function ChataForm() {
     try {
       event.preventDefault();
       const data = new FormData(event.currentTarget);
-      const message = data.get("message");
-      if (message == "") {
+      const messageBody = data.get("message");
+      if (messageBody == "") {
         return false;
       }
 
-      socket.emit(socketEvent.SEND_MESSAGE, {
-        message,
+      const message = {
+        message: messageBody,
         id,
-      });
+      }
+      socket.emit(socketEvent.SEND_MESSAGE, message);
+
+      dispatch(SET_ROOM_MESSAGE({ roomName: "public", message }))
 
       setMessageBody("")
 
