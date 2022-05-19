@@ -3,11 +3,22 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Container from "@mui/material/Container";
+import IconButton from "@mui/material/IconButton";
+import { Add } from "@mui/icons-material";
 
 import CreateRoom from "./CreateRoom";
 import JoinRoom from "./JoinRoom";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { roomList } from "../../../store/chat";
 
 export default function BaseModal() {
+
+  const [isOpen,setIsOpen ] = useState(true)
+
+  const rooms =  useSelector(roomList) 
+
+
   const style = {
     position: "absolute",
     top: "50%",
@@ -20,11 +31,31 @@ export default function BaseModal() {
     p: 4,
   };
 
+  useEffect(()=>{
+    rooms.length == 0 ? setIsOpen(true) : setIsOpen(false) 
+  },[])
+
   return (
     <Container>
+    <IconButton
+        aria-label="add"
+        size="large"
+        variant="contained"
+        sx={{
+          position: "fixed",
+          right: 0,
+          bottom: 0,
+          margin: "20px 20px",
+          background: "green",
+        }}
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <Add fontSize="inherit" />
+      </IconButton>
+
       <Modal
-        open={true}
-        onClose={() => {}}
+        open={isOpen}
+        onClose={() => setIsOpen(!isOpen)}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >

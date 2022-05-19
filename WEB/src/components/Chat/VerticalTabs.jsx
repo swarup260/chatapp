@@ -17,8 +17,7 @@ function a11yProps(index) {
 }
 
 export default function VerticalTabs() {
-  // const chatRooms = useSelector(roomList);
-  const chatRooms = ["pulic","new public"];
+  const chatRooms = useSelector(roomList);
 
   const [value, setValue] = useState(0);
 
