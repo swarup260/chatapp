@@ -21,7 +21,7 @@ export default function AlertDailogBox() {
     return (<Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         open={isOpen}
-        autoHideDuration={6000}
+        autoHideDuration={1000}
     >
         <Alert onClose={handleClose} severity={type} sx={{ width: '100%' }}>
             {message}

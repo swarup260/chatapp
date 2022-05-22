@@ -9,12 +9,14 @@ const slice = createSlice({
             message: "hello",
         },
         isLoading: false,
-        user : {}
+        user: {},
+        isModalOpen: true
     },
     reducers: {
         SET_DAILOGBOX_STATE: (state, { payload }) => ({ ...state, dailog: payload }),
         SET_IS_LOADING: (state, { payload }) => ({ ...state, isLoading: payload }),
-        SET_USER: (state, { payload }) => ({ ...state, user: payload })
+        SET_USER: (state, { payload }) => ({ ...state, user: payload }),
+        SET_IS_MODAL_OPEN: (state, { payload }) => ({ ...state, isModalOpen: payload })
     }
 })
 
@@ -22,7 +24,8 @@ const slice = createSlice({
 export const {
     SET_DAILOGBOX_STATE,
     SET_IS_LOADING,
-    SET_USER
+    SET_USER,
+    SET_IS_MODAL_OPEN
 } = slice.actions;
 
 
@@ -33,3 +36,4 @@ export default slice.reducer;
 export const dailogState = ({ entities }) => entities.app.dailog
 export const isApiLoading = ({ entities }) => entities.app.isLoading
 export const userData = ({ entities }) => entities.app.user
+export const isModalOpen = ({ entities }) => entities.app.isModalOpen

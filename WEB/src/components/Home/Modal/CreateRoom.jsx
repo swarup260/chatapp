@@ -1,20 +1,20 @@
 import Box from "@mui/material/Box";
 import { useDispatch, useSelector } from "react-redux";
-import { isApiLoading, userData } from "../../../store/app";
+import { isApiLoading, SET_IS_MODAL_OPEN, userData } from "../../../store/app";
 import InputField from "../../InputField";
 import SubmitButton from "../../Login/SubmitButton";
 import { socketInstance } from "../../../store/socket";
 import Joi from "joi";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 import { socketEvent } from "../../../config/socket";
 import { SET_ROOM } from "../../../store/chat";
 
 export default function CreateRoom() {
   const isLoading = useSelector(isApiLoading);
-  const dispatch = useDispatch();
   const { id:userID } = useSelector(userData)
-  let navigate = useNavigate()
+  const dispatch = useDispatch();
+  // let navigate = useNavigate()
 
   const socket = useSelector(socketInstance)
 
@@ -29,7 +29,8 @@ export default function CreateRoom() {
 
       socket.emit(socketEvent.CREATE_NEW_ROOM,{room,userID})
       dispatch(SET_ROOM(room))
-      navigate("/chat", { replace: true });
+      dispatch(SET_IS_MODAL_OPEN(false))
+      // navigate("/chat", { replace: true });
 
     } catch (error) {
       console.log(error)

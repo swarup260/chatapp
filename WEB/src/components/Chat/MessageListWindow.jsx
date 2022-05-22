@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import "../../chat.css";
 import { socketEvent } from "../../config/socket";
 import { userData } from "../../store/app";
-import { chatRoomMessageList, SET_ROOM_MESSAGE } from "../../store/chat";
+import { activeRoom, chatRoomMessageList, SET_ROOM_MESSAGE } from "../../store/chat";
 import { socketInstance } from "../../store/socket";
 import Message from "./Message";
 
@@ -12,7 +12,8 @@ export default function MessageListWindow() {
 
   const messagesEndRef = useRef(null);
 
-  const messageList = useSelector(chatRoomMessageList("public"));
+  const room = useSelector(activeRoom)
+  const messageList = useSelector(chatRoomMessageList(room));
   const dispatch = useDispatch()
 
 
@@ -20,16 +21,27 @@ export default function MessageListWindow() {
   const { id } = useSelector(userData)
 
   useEffect(() => {
-    
-    socket.on(socketEvent.RECIEVE_MESSAGE,function(message){
-      // console.log({message})
+    socket.on(socketEvent.RECIEVE_MESSAGE,function(messageBody){
+
+      const message = {
+        message: messageBody,
+        id,
+      }
+
       dispatch(SET_ROOM_MESSAGE({ roomName:"public",message}))
     })
 
+    return () => {
+      socket.close()
+    }
+  })
+
+  useEffect(() => {
     messagesEndRef.current.scrollTo({
       top: document.documentElement.scrollHeight,
       behavior: "smooth",
     });
+
   }, [messageList]);
 
   return (

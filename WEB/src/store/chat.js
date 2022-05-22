@@ -4,7 +4,8 @@ const slice = createSlice({
     name: "chat",
     initialState: {
         rooms: {},
-        roomList: []
+        roomList: [],
+        activeRoom:''
     },
     reducers: {
         SET_ROOM: (state, { payload }) => {
@@ -28,20 +29,23 @@ const slice = createSlice({
             const messageList = state.rooms[roomName].messageList
             const updateRoomChat = { ...rooms[roomName], messageList: [...messageList, message] }
             return { ...state, rooms: { ...rooms, [roomName]: updateRoomChat } }
-        }
+        },
+        SET_ACTIVE_ROOM:(state,{payload}) => ({...state,activeRoom:payload})
     }
 })
 
 /* Export All ActionType */
 export const {
     SET_ROOM,
-    SET_ROOM_MESSAGE
+    SET_ROOM_MESSAGE,
+    SET_ACTIVE_ROOM
 } = slice.actions
 
 /* Export  reducer */
 export default slice.reducer;
 
 /* Export All Selector */
-export const chatRoomMessageList = roomName => ({ entities }) => (entities.chat.rooms[roomName].messageList || [])
+export const chatRoomMessageList = roomName => ({ entities }) => (entities.chat.rooms[roomName]?.messageList || [])
 export const allRooms = ({ entities }) => entities.chat.rooms
 export const roomList = ({ entities }) => entities.chat.roomList
+export const activeRoom = ({entities}) => entities.chat.activeRoom

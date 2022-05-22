@@ -9,12 +9,14 @@ import { Add } from "@mui/icons-material";
 import CreateRoom from "./CreateRoom";
 import JoinRoom from "./JoinRoom";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { roomList } from "../../../store/chat";
+import { isModalOpen, SET_IS_MODAL_OPEN } from "../../../store/app";
 
 export default function BaseModal() {
 
-  const [isOpen,setIsOpen ] = useState(true)
+  const isOpen = useSelector(isModalOpen)
+  const dispatch = useDispatch()
 
   const rooms =  useSelector(roomList) 
 
@@ -32,7 +34,7 @@ export default function BaseModal() {
   };
 
   useEffect(()=>{
-    rooms.length == 0 ? setIsOpen(true) : setIsOpen(false) 
+    rooms.length == 0 ? dispatch(SET_IS_MODAL_OPEN(true)) : dispatch(SET_IS_MODAL_OPEN(false))
   },[])
 
   return (
@@ -48,14 +50,14 @@ export default function BaseModal() {
           margin: "20px 20px",
           background: "green",
         }}
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => dispatch(SET_IS_MODAL_OPEN(!isOpen))}
       >
         <Add fontSize="inherit" />
       </IconButton>
 
       <Modal
         open={isOpen}
-        onClose={() => setIsOpen(!isOpen)}
+        onClose={() => dispatch(SET_IS_MODAL_OPEN(!isOpen))}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
