@@ -8,7 +8,7 @@ import { Add } from "@mui/icons-material";
 
 import CreateRoom from "./CreateRoom";
 import JoinRoom from "./JoinRoom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { roomList } from "../../../store/chat";
 import { isModalOpen, SET_IS_MODAL_OPEN } from "../../../store/app";
@@ -16,9 +16,14 @@ import { isModalOpen, SET_IS_MODAL_OPEN } from "../../../store/app";
 export default function BaseModal() {
 
   const isOpen = useSelector(isModalOpen)
+  const rooms =  useSelector(roomList) 
+
+  const  closeHandler = () => {
+    if(rooms.length == 0 ) return true
+    dispatch(SET_IS_MODAL_OPEN(!isOpen))
+  }
   const dispatch = useDispatch()
 
-  const rooms =  useSelector(roomList) 
 
 
   const style = {
@@ -57,7 +62,7 @@ export default function BaseModal() {
 
       <Modal
         open={isOpen}
-        onClose={() => dispatch(SET_IS_MODAL_OPEN(!isOpen))}
+        onClose={closeHandler}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
