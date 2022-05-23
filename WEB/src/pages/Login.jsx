@@ -1,26 +1,35 @@
-import Button from "@mui/material/Button";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import { Link } from "react-router-dom";
 import Joi from "joi";
+import { useNavigate } from "react-router-dom";
 
 import BaseContainer from "../components/Login/BaseContainer";
 import SubmitButton from "../components/Login/SubmitButton";
 import InputField from "../components/InputField";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  isApiLoading,
+  isApiLoading, RESET_USER,
 } from "../store/app";
 import { SET_DAILOGBOX_STATE } from "../store/app";
 import func from "../utils/functions";
-import { apiCall,endpoints } from "../config/api";
+import { apiCall, endpoints } from "../config/api";
+import { useEffect } from "react";
+import { RESET_AUTH } from "../store/auth";
 
 export default function Login() {
   const isLoading = useSelector(isApiLoading);
-
   const dispatch = useDispatch();
+  let navigate = useNavigate();
+
+
+  /* reset user */
+  useEffect(() => {
+    dispatch(RESET_AUTH())
+    dispatch(RESET_USER())
+  },[])
 
   const handleSubmit = async (event) => {
     try {
@@ -34,8 +43,10 @@ export default function Login() {
       await apiCall({
         endpoint: endpoints.LOGIN,
         data: { email, password },
-        dispatch
+        dispatch,
+        navigate
       });
+
 
     } catch (error) {
       dispatch(SET_DAILOGBOX_STATE(func.setErrorAlert(error)));

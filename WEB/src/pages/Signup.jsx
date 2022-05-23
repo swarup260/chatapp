@@ -10,12 +10,14 @@ import SubmitButton from "../components/Login/SubmitButton";
 import InputField from "../components/InputField";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  isApiLoading
+  isApiLoading, RESET_USER
 } from "../store/app";
 
 import { SET_DAILOGBOX_STATE } from "../store/app";
 import func from "../utils/functions";
 import { apiCall, endpoints } from "../config/api";
+import { useEffect } from "react";
+import { RESET_AUTH } from "../store/auth";
 
 export default function SignUp() {
 
@@ -23,6 +25,13 @@ export default function SignUp() {
   let navigate = useNavigate()
 
   const isLoading = useSelector(isApiLoading);
+
+
+  useEffect(()=>{
+    dispatch(RESET_AUTH());
+    dispatch(RESET_USER())
+  },[])
+
 
   const handleSubmit = async (event) => {
     try {
@@ -46,10 +55,10 @@ export default function SignUp() {
           password,
           repassword,
           username,
-        }, dispatch
+        }, dispatch,
+        navigate
       });
 
-      navigate("/", { replace: true });
     } catch (error) {
       dispatch(SET_DAILOGBOX_STATE(func.setErrorAlert(error)));
     }

@@ -18,7 +18,7 @@ export const endpoints = {
 }
 
 
-export const apiCall = async ({ endpoint, data, dispatch }) => {
+export const apiCall = async ({ endpoint, data, dispatch,navigate }) => {
     try {
         dispatch(SET_IS_LOADING(true));
         const result = await axios.post(endpoint, data);
@@ -50,6 +50,10 @@ export const apiCall = async ({ endpoint, data, dispatch }) => {
         dispatch(SET_USER(userResult.data.data))
         dispatch(SET_IS_LOGIN(true));
         dispatch(SET_IS_LOADING(false));
+
+        // redirect to home 
+
+        navigate("/home", { replace: true });
 
     } catch (error) {
         dispatch(SET_DAILOGBOX_STATE(func.setErrorAlert(error)));

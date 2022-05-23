@@ -16,7 +16,8 @@ const slice = createSlice({
         SET_DAILOGBOX_STATE: (state, { payload }) => ({ ...state, dailog: payload }),
         SET_IS_LOADING: (state, { payload }) => ({ ...state, isLoading: payload }),
         SET_USER: (state, { payload }) => ({ ...state, user: payload }),
-        SET_IS_MODAL_OPEN: (state, { payload }) => ({ ...state, isModalOpen: payload })
+        SET_IS_MODAL_OPEN: (state, { payload }) => ({ ...state, isModalOpen: payload }),
+        RESET_USER: (state,_) => ({...state,user:{}})
     }
 })
 
@@ -25,7 +26,8 @@ export const {
     SET_DAILOGBOX_STATE,
     SET_IS_LOADING,
     SET_USER,
-    SET_IS_MODAL_OPEN
+    SET_IS_MODAL_OPEN,
+    RESET_USER
 } = slice.actions;
 
 

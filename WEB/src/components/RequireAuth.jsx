@@ -6,7 +6,7 @@ export default function RequireAuth({children}){
 
     let location = useLocation()
 
-    const isUserExists = useSelector(isUserLogin) == null
+    const isUserExists = useSelector(isUserLogin)
     
     if (!isUserExists) {
         return <Navigate to="/" state={{form: location }} replace />
