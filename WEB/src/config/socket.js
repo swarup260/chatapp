@@ -30,9 +30,6 @@ export const initialSocketInstance = ({ dispatch }) => {
         const socket = io(`http://${window.location.hostname}:5000`);
         const notificationSocket = io(`http://${window.location.hostname}:5000/${channels.NOTIFICATION}`);
 
-        // if (socket.disconnected) {
-        //     throw new Error("SERVER DOWN 😪!!!")
-        // }
 
         notificationSocket.on("connect",() => dispatch(SET_NOTIFICATION_SOCKET(notificationSocket)))
 
@@ -48,9 +45,9 @@ export const initialSocketInstance = ({ dispatch }) => {
             dispatch(SET_IS_LOADING(false));
         })
 
-
-
-        return () => socket.close();
+        return () => {
+            socket.close()
+        }
     } catch (error) {
         dispatch(SET_DAILOGBOX_STATE(func.setErrorAlert(error)));
         dispatch(SET_IS_LOADING(false));

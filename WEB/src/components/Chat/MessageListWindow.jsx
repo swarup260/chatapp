@@ -21,14 +21,9 @@ export default function MessageListWindow() {
   const { id } = useSelector(userData)
 
   useEffect(() => {
-    socket.on(socketEvent.RECIEVE_MESSAGE,function(messageBody){
-
-      const message = {
-        message: messageBody,
-        id,
-      }
-
-      dispatch(SET_ROOM_MESSAGE({ roomName:"public",message}))
+    socket.on(socketEvent.RECIEVE_MESSAGE,function(message){
+      console.log(message)
+      dispatch(SET_ROOM_MESSAGE({ roomName:room,message}))
     })
     
     return () => {
