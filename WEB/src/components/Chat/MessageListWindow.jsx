@@ -30,7 +30,7 @@ export default function MessageListWindow() {
 
       dispatch(SET_ROOM_MESSAGE({ roomName:"public",message}))
     })
-
+    
     return () => {
       socket.close()
     }
