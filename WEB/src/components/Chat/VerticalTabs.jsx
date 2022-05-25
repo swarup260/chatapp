@@ -49,7 +49,7 @@ export default function VerticalTabs() {
           <Tab label={`Chat Room: ${val}`} {...a11yProps(val)} key={index} />
         ))}
       </Tabs>
-      {chatRooms.map((val, index) => {
+      {chatRooms.map((_, index) => {
         return (
           <TabPanel value={value} index={index} key={index}>
             <MessageListWindow />

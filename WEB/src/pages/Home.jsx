@@ -1,64 +1,46 @@
-import { useDispatch } from "react-redux";
-import { io } from "socket.io-client";
+import { Container } from "@mui/material";
 import { useEffect, useState } from "react";
-import Container from "@mui/material/Container";
+import { useDispatch } from "react-redux";
+
 
 import LoadingContainer from "../components/Home/LoadingContainer";
 import BaseModal from "../components/Home/Modal/BaseModal";
 import VerticalTabs from "../components/Chat/VerticalTabs";
-import { SET_SOCKET } from "../store/socket";
-import { SET_DAILOGBOX_STATE,SET_IS_LOADING  } from "../store/app";
-import func from "../utils/functions"
+import { SET_DAILOGBOX_STATE  } from "../store/app";
+import func from "../utils/functions";
+import { socket } from "../config/socket";
 
 export default function Home() {
 
-  const [isConnected,setIsConnected] = useState(false)
-
-  const dispatch = useDispatch();
-  /* socket.io example */
-  /* intialize Socket Instance */
-  const socket = io(`http://${window.location.hostname}:5000`);
+  const [isConnected, setIsConnected] = useState(false)
+  const dispatch = useDispatch()
 
   useEffect(() => {
-
-    socket.on("connect", () => {
-      if (!socket.connected) {
-        throw new Error("NOT CONNNECTED 😪!!!")
-      }
-
+    socket.on('connect', () => {
       setIsConnected(true)
       /* emit new event */
-      dispatch(SET_SOCKET(socket))
       dispatch(SET_DAILOGBOX_STATE(func.setSuccessAlert("CONNECTED !!!")));
-      dispatch(SET_IS_LOADING(false));
+    })
+    socket.on('disconnect', () => {
+      setIsConnected(false)
+      dispatch(SET_DAILOGBOX_STATE(func.setErrorAlert("NOT CONNECTED !!!")));
     })
 
-    socket.on('disconnect', () => {
-      /* emit new event */
-      dispatch(SET_SOCKET(""))
-      dispatch(SET_DAILOGBOX_STATE(func.setErrorAlert("NOT CONNNECTED 😪!!!")));
-      dispatch(SET_IS_LOADING(true));
-    });
-
-
     return () => {
-      socket.off('connect');
-      socket.off('disconnect');
+      socket.off('connect')
+      socket.off('disconnect')
     }
-  }, [])
+  }, [socket])
 
   if (!isConnected) {
-    return (
-      <LoadingContainer />
-    );
+    return <LoadingContainer />
   }
-
   if (isConnected) {
     return (
       <Container maxWidth="m">
         <BaseModal />
         <VerticalTabs />
       </Container>
-    );
+    )
   }
 }

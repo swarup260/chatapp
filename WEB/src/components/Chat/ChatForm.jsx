@@ -4,16 +4,15 @@ import Joi from "joi";
 
 import InputField from "../InputField";
 import { useDispatch, useSelector } from "react-redux";
-import { socketInstance } from "../../store/socket";
 import { userData } from "../../store/app";
 import { socketEvent } from "../../config/socket";
 import { useState } from "react";
 import { SET_ROOM_MESSAGE } from "../../store/chat";
+import { socket } from "../../config/socket";
 
 export default function ChataForm() {
   const [messageBody, setMessageBody] = useState("");
-
-  const socket = useSelector(socketInstance);
+  
   const { id } = useSelector(userData);
   const dispatch = useDispatch();
 

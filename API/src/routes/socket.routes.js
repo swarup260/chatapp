@@ -19,7 +19,10 @@ module.exports = function socketRoute(io) {
     io.on("connection", socket => {
 
         console.log("USER CONNECTED ON MAIN CHANNEL")
-        socket.on("SEND_MESSAGE",val => socket.broadcast.emit("RECIEVE_MESSAGE",val))
-
+        socket.on("SEND_MESSAGE",val => {
+            console.log({val})
+            socket.broadcast.emit("RECIEVE_MESSAGE",val)
+        })
     })
+
 }

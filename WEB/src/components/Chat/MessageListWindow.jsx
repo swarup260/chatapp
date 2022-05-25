@@ -2,10 +2,8 @@ import Box from "@mui/material/Box";
 import { useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "../../chat.css";
-import { socketEvent } from "../../config/socket";
-import { userData } from "../../store/app";
+import { socketEvent, socket } from "../../config/socket";
 import { activeRoom, chatRoomMessageList, SET_ROOM_MESSAGE } from "../../store/chat";
-import { socketInstance } from "../../store/socket";
 import Message from "./Message";
 
 export default function MessageListWindow() {
@@ -16,18 +14,13 @@ export default function MessageListWindow() {
   const messageList = useSelector(chatRoomMessageList(room));
   const dispatch = useDispatch()
 
-
-  const socket = useSelector(socketInstance)
-  const { id } = useSelector(userData)
-
   useEffect(() => {
-    socket.on(socketEvent.RECIEVE_MESSAGE,function(message){
-      console.log(message)
+    socket.on(socketEvent.RECIEVE_MESSAGE, function (message) {
       dispatch(SET_ROOM_MESSAGE({ roomName:room,message}))
     })
-    
+
     return () => {
-      socket.close()
+      socket.off(socketEvent.RECIEVE_MESSAGE)
     }
   })
 

@@ -1,13 +1,12 @@
 import Box from "@mui/material/Box";
 import { useDispatch, useSelector } from "react-redux";
-import { isApiLoading, SET_IS_MODAL_OPEN, userData } from "../../../store/app";
-import InputField from "../../InputField";
-import SubmitButton from "../../Login/SubmitButton";
-import { socketInstance } from "../../../store/socket";
 import Joi from "joi";
 // import { useNavigate } from "react-router-dom";
 
-import { socketEvent } from "../../../config/socket";
+import { isApiLoading, SET_IS_MODAL_OPEN, userData } from "../../../store/app";
+import InputField from "../../InputField";
+import SubmitButton from "../../Login/SubmitButton";
+import { socketEvent,socket } from "../../../config/socket";
 import { SET_ROOM } from "../../../store/chat";
 
 export default function CreateRoom() {
@@ -15,8 +14,6 @@ export default function CreateRoom() {
   const { id:userID } = useSelector(userData)
   const dispatch = useDispatch();
   // let navigate = useNavigate()
-
-  const socket = useSelector(socketInstance)
 
   const handleSubmit = async (event) => {
     try {
