@@ -9,6 +9,7 @@ import VerticalTabs from "../components/Chat/VerticalTabs";
 import { SET_DAILOGBOX_STATE  } from "../store/app";
 import func from "../utils/functions";
 import { socket } from "../config/socket";
+import { SET_ROOM } from "../store/chat";
 
 export default function Home() {
 
@@ -21,6 +22,13 @@ export default function Home() {
       /* emit new event */
       dispatch(SET_DAILOGBOX_STATE(func.setSuccessAlert("CONNECTED !!!")));
     })
+
+    socket.on("ROOM_LIST",(rooms) => {
+      console.log({rooms})
+      rooms.forEach(room => dispatch(SET_ROOM(room)))
+    })
+
+
     socket.on('disconnect', () => {
       setIsConnected(false)
       dispatch(SET_DAILOGBOX_STATE(func.setErrorAlert("NOT CONNECTED !!!")));
@@ -30,7 +38,7 @@ export default function Home() {
       socket.off('connect')
       socket.off('disconnect')
     }
-  }, [socket])
+  }, [])
 
   if (!isConnected) {
     return <LoadingContainer />

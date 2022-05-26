@@ -7,7 +7,7 @@ import { isApiLoading, SET_IS_MODAL_OPEN, userData } from "../../../store/app";
 import InputField from "../../InputField";
 import SubmitButton from "../../Login/SubmitButton";
 import { socketEvent,socket } from "../../../config/socket";
-import { SET_ROOM } from "../../../store/chat";
+import { SET_ACTIVE_ROOM, SET_ROOM } from "../../../store/chat";
 
 export default function CreateRoom() {
   const isLoading = useSelector(isApiLoading);
@@ -27,6 +27,7 @@ export default function CreateRoom() {
       socket.emit(socketEvent.CREATE_NEW_ROOM,{room,userID})
       dispatch(SET_ROOM(room))
       dispatch(SET_IS_MODAL_OPEN(false))
+      dispatch(SET_ACTIVE_ROOM(room))
       // navigate("/chat", { replace: true });
 
     } catch (error) {
