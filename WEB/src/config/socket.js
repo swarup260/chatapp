@@ -18,4 +18,4 @@ export const socketEvent = {
 /* socket.io example */
 /* intialize Socket Instance */
 export const socket = io(`http://${window.location.hostname}:5000`);
-export const notificationSocket = io(`http://${window.location.hostname}:5000/notification`);
+// export const notificationSocket = io(`http://${window.location.hostname}:5000/notification`);

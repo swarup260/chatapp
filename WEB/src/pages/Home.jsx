@@ -18,6 +18,7 @@ export default function Home() {
 
   useEffect(() => {
     socket.on('connect', () => {
+      console.log("CONNECTED")
       setIsConnected(true)
       /* emit new event */
       dispatch(SET_DAILOGBOX_STATE(func.setSuccessAlert("CONNECTED !!!")));
@@ -38,7 +39,7 @@ export default function Home() {
       socket.off('connect')
       socket.off('disconnect')
     }
-  }, [])
+  }, [socket])
 
   if (!isConnected) {
     return <LoadingContainer />
