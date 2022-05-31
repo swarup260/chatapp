@@ -2,7 +2,36 @@
 const rooms = []
 const users = []
 
+/* 
+FRONTEND : 
+listener
+    * ROOM_LIST 
+    * UPDATE_ROOM_LIST
+    * NEW_USER_JOIN 
+    * RECEIVE_MSG
+    * ACTIVE_USERS 
+emitter 
+    * JOIN_ROOM
+    * CREATE_ROOM
+    * SEND_MSG
 
+
+
+BACKEND : 
+
+emitter :
+    * ROOM_LIST 
+    * UPDATE_ROOM_LIST
+    * NEW_USER_JOIN 
+    * RECEIVE_MSG
+    * ACTIVE_USERS 
+listener : 
+    * JOIN_ROOM
+    * CREATE_ROOM
+    * SEND_MSG
+
+
+*/
 /**
  * 
  * @param {import("socket.io").Server} io 
