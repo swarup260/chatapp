@@ -1,75 +1,20 @@
 
-const rooms = []
-const users = []
+const messageHandler = require('../handlers/messages.handler')
 
-/* 
-FRONTEND : 
-listener
-    * ROOM_LIST 
-    * UPDATE_ROOM_LIST
-    * NEW_USER_JOIN 
-    * RECEIVE_MSG
-    * ACTIVE_USERS 
-emitter 
-    * JOIN_ROOM
-    * CREATE_ROOM
-    * SEND_MSG
+const notificationHandler = require('../handlers/notification.handler')
 
+const chatHandler = require('../handlers/chat.handler')
 
-
-BACKEND : 
-
-emitter :
-    * ROOM_LIST 
-    * UPDATE_ROOM_LIST
-    * NEW_USER_JOIN 
-    * RECEIVE_MSG
-    * ACTIVE_USERS 
-listener : 
-    * JOIN_ROOM
-    * CREATE_ROOM
-    * SEND_MSG
-
-
-*/
 /**
  * 
  * @param {import("socket.io").Server} io 
  */
 module.exports = function socketRoute(io) {
 
-    // io.on("connection", () => console.log("USER CONNECTED ON MAIN CHANNEL"))
+    io.on("/message",messageHandler)
 
-    // io.of("/notification").on("connection", () => console.log("USER CONNECTED ON NOTIFICATION CHANNEL"))
+    io.on("/chat",chatHandler)
 
-    // io.of("/chat").on("connection", () => console.log("USER CONNECTED ON CHAT CHANNEL"))
-
-
-    io.on("connection", socket => {
-
-        console.log("USER CONNECTED ON MAIN CHANNEL")
-
-
-        io.emit("ROOM_LIST",rooms)
-
-        socket.on("CREATE_NEW_ROOM",({room,userID}) => {
-
-            /* rooms pushed */
-            rooms.push(room)
-            /* user pused */
-            users.push(userID)
-
-            io.socketsJoin(room)
-        })
-
-        socket.on("JOIN_ROOM",({room,userID}) => {
-            io.socketsJoin(room)
-        })
-        
-        socket.on("SEND_MESSAGE",val => {
-            console.log({val})
-            socket.broadcast.emit("RECIEVE_MESSAGE",val)
-        })
-    })
+    io.on("/notification",notificationHandler)
 
 }

@@ -1,38 +1,19 @@
-const { errorResponseBody } = require("../util/function")
-const CODE = require("../config/ResponseCode")
-
-const EVENT = {
-    SEND_MESSAGE: 'SEND_MESSAGE',
-    RECIEVE_MESSAGE: 'RECIEVE_MESSAGE',
-    BOARDCAST_MESSAGE: 'BOARDCAST_MESSAGE',
-    USER_CONNECTED: 'USER_CONNECTED',
-    CREATE_NEW_ROOM: 'CREATE_NEW_ROOM'
+const EVENTS = {
+    SEND_MSG: "SEND_MSG",
+    RECEIVE_MSG: "RECEIVE_MSG"
 }
+/**
+ * 
+ * @param {import("socket.io").Server} socket 
+ */
+module.exports = function (socket) {
 
+    socket.on(EVENTS.SEND_MSG, payload => {
+        console.log({ payload })
+        const { room, message } = payload
+        /* save code */
+        socket.to(room).emit(EVENTS.RECEIVE_MSG, message)
+    })
 
-module.exports = class MessageHandler {
-    /**
-     * 
-     * @param {Object} param 
-     * @param {import("../services/message.service")} param.messageService 
-     */
-    constructor({ messageService }) {
-        this.messageService = messageService
-    }
-
-
-    /**
-     * 
-     * @param {import("socket.io").Server} socket 
-     */
-    baseHandler(socket) {
-
-        socket.on(EVENT.SEND_MESSAGE, this.sendMessage)
-        socket.on(EVENT.RECIEVE_MESSAGE, this.recieve)
-    }
-
-    sendMessage(val) {
-        console.log({ val })
-    }
 
 }
