@@ -8,27 +8,10 @@ const slice = createSlice({
         activeRoom:''
     },
     reducers: {
-        SET_ROOM: (state, { payload }) => {
-            const { rooms, roomList } = state
-            const newRoom = {
-                [payload]: {
-                    roomName: payload,
-                    messageList: []
-                }
-            }
-            let newRoomList = roomList.indexOf(payload) > 0 ? [...roomList] : [...roomList,payload]
-
-            return { ...state, rooms: { ...rooms, ...newRoom }, roomList:newRoomList }
+        ADD_NEW_ROOM: (state, { payload }) => {
+            
         },
-        SET_ROOM_MESSAGE: (state, { payload }) => {
-            const rooms = state.rooms
-            const { roomName, message } = payload
-
-            if (!state.rooms[roomName]) throw new Error("Chat Room Doesn't Exists!")
-
-            const messageList = state.rooms[roomName].messageList
-            const updateRoomChat = { ...rooms[roomName], messageList: [...messageList, message] }
-            return { ...state, rooms: { ...rooms, [roomName]: updateRoomChat } }
+        ADD_ROOM_MESSAGES: (state, { payload }) => {
         },
         SET_ACTIVE_ROOM:(state,{payload}) => ({...state,activeRoom:payload})
     }
@@ -36,8 +19,8 @@ const slice = createSlice({
 
 /* Export All ActionType */
 export const {
-    SET_ROOM,
-    SET_ROOM_MESSAGE,
+    ADD_ROOM,
+    ADD_ROOM_MESSAGES,
     SET_ACTIVE_ROOM
 } = slice.actions
 

@@ -2,7 +2,6 @@ import { Container } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
-
 import LoadingContainer from "../components/Home/LoadingContainer";
 import BaseModal from "../components/Home/Modal/BaseModal";
 import VerticalTabs from "../components/Chat/VerticalTabs";
