@@ -1,9 +1,9 @@
 
-const messageHandler = require('../handlers/messages.handler')
+const { messageHandler } = require('../handlers/messages.handler')
 
-const notificationHandler = require('../handlers/notification.handler')
+const { notificationHandler } = require('../handlers/notification.handler')
 
-const chatHandler = require('../handlers/chat.handler')
+const { chatHandler } = require('../handlers/chat.handler')
 
 /**
  * 

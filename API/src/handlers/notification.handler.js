@@ -1,11 +1,11 @@
-const EVENTS = {
+module.exports.EVENTS = {
     NEW_USER_JOIN: "NEW_USER_JOIN"
 }
 /**
  * 
  * @param {import("socket.io").Server} socket 
  */
-module.exports = function (socket) {
+module.exports.notificationHandler = socket => {
 
     socket.on(EVENTS.NEW_USER_JOIN, payload => {
 
