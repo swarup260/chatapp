@@ -1,5 +1,6 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit"
 import reducer from "./reducer"
+import socketMiddleware from "./middlewares/socket.middleware"
 
 import {
     FLUSH,
@@ -9,16 +10,17 @@ import {
     PURGE,
     REGISTER,
 } from 'redux-persist';
-import { SET_SOCKET } from "./socket";
 
 export default function () {
     return configureStore({
         reducer,
         middleware: (getDefaultMiddleware) => getDefaultMiddleware({
             serializableCheck: {
-                ignoredActions: [SET_SOCKET.type,FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
+                ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
             }
             // serializableCheck: false
-        })
+        },
+        socketMiddleware
+        )
     })
 }

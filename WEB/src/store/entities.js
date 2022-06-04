@@ -5,7 +5,7 @@ import sessionStorage from "redux-persist/es/storage/session";
 
 import authReducer from "./auth";
 import appReducer from "./app";
-import socketReducer from "./socket"
+import socketReducer from "./socketEvent"
 import chatReducer from "./chat"
 
 

@@ -9,9 +9,10 @@ const slice = createSlice({
     },
     reducers: {
         ADD_NEW_ROOM: (state, { payload }) => {
-            
+            return state
         },
         ADD_ROOM_MESSAGES: (state, { payload }) => {
+            return state
         },
         SET_ACTIVE_ROOM:(state,{payload}) => ({...state,activeRoom:payload})
     }

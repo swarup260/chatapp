@@ -10,9 +10,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { roomList } from "../../../store/chat";
 import { isApiLoading,isModalOpen,SET_IS_MODAL_OPEN,userData } from "../../../store/app";
-import { socketEvent,socket } from "../../../config/socket";
+import { socket } from "../../../config/socket";
 import SubmitButton from "../../Login/SubmitButton";
-import { SET_ROOM } from "../../../store/chat";
+// import { SET_ROOM } from "../../../store/chat";
 
 export default function JoinRoom() {
   const [room, setRoom] = useState("");
@@ -27,8 +27,8 @@ export default function JoinRoom() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    socket.emit(socketEvent.JOIN_ROOM,{room,userID})
-      dispatch(SET_ROOM(room))
+    // socket.emit(socketEvent.JOIN_ROOM,{room,userID})
+      // dispatch(SET_ROOM(room))
       dispatch(SET_IS_MODAL_OPEN(false))
       // navigate("/chat", { replace: true });
   };

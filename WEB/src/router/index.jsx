@@ -1,15 +1,15 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import * as React from "react";
 import App from "../App";
-import NotFound from '../pages/NotFound';
+import Chat from '../pages/Chat';
 import RequireAuth from "../components/RequireAuth";
-
 
 export default function AppRouter() {
 
   const SignUp = React.lazy(() => import("../pages/Signup"))
   const Home = React.lazy(() => import("../pages/Home"))
   const NotFound = React.lazy(() => import("../pages/NotFound"))
+  // const Chat = React.lazy(() => import("../pages/Chat"))
 
   return (
     <BrowserRouter>
@@ -24,6 +24,8 @@ export default function AppRouter() {
         <Route path="*" element={<React.Suspense fallback={<>...</>}>
           <NotFound />
         </React.Suspense>} />
+        {/* TESTING */}
+        <Route path="/chat" element={<Chat />} />
       </Routes>
     </BrowserRouter>
   );
