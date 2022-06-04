@@ -1,4 +1,4 @@
-module.exports.EVENTS = {
+const EVENTS = {
     SEND_MSG: "SEND_MSG",
     RECEIVE_MSG: "RECEIVE_MSG"
 }
@@ -6,7 +6,7 @@ module.exports.EVENTS = {
  * 
  * @param {import("socket.io").Server} socket 
  */
-module.exports.messageHandler = socket  => {
+const messageHandler = socket => {
 
     socket.on(EVENTS.SEND_MSG, payload => {
         console.log({ payload })
@@ -15,4 +15,9 @@ module.exports.messageHandler = socket  => {
         socket.to(room).emit(EVENTS.RECEIVE_MSG, message)
     })
 
+}
+
+module.exports = {
+    EVENTS,
+    messageHandler
 }

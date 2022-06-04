@@ -1,11 +1,12 @@
-module.exports.EVENTS = {
+const EVENTS = {
     NEW_USER_JOIN: "NEW_USER_JOIN"
 }
 /**
  * 
  * @param {import("socket.io").Server} socket 
  */
-module.exports.notificationHandler = socket => {
+const notificationHandler = socket => {
+
 
     socket.on(EVENTS.NEW_USER_JOIN, payload => {
 
@@ -16,4 +17,9 @@ module.exports.notificationHandler = socket => {
         socket.to(room).emit(EVENTS.NEW_USER_JOIN, { room, message })
     })
 
+}
+
+module.exports = {
+    EVENTS,
+    notificationHandler
 }

@@ -1,4 +1,4 @@
-module.exports.EVENTS = {
+const EVENTS = {
     ROOM_LIST: "ROOM_LIST",
     ACTIVE_USERS: "ACTIVE_USERS",
     JOIN_ROOM: "JOIN_ROOM",
@@ -12,7 +12,7 @@ const rooms = []
  * 
  * @param {import("socket.io").Server} socket 
  */
-module.exports.chatHandler = socket => {
+const chatHandler = socket => {
 
     socket.emit(EVENTS.ROOM_LIST, rooms)
 
@@ -37,4 +37,9 @@ module.exports.chatHandler = socket => {
     })
 
 
+}
+
+module.exports = {
+    EVENTS,
+    chatHandler
 }

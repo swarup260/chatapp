@@ -1,9 +1,8 @@
 
 const { messageHandler } = require('../handlers/messages.handler')
-
+const { chatHandler } = require('../handlers/chat.handler')
 const { notificationHandler } = require('../handlers/notification.handler')
 
-const { chatHandler } = require('../handlers/chat.handler')
 
 /**
  * 
@@ -11,10 +10,13 @@ const { chatHandler } = require('../handlers/chat.handler')
  */
 module.exports = function socketRoute(io) {
 
-    io.on("/message",messageHandler)
+    io.on("connection",() => console.log("USER CONNECTED !!"))
 
-    io.on("/chat",chatHandler)
+    io.of("/message").on("connection",messageHandler)
 
-    io.on("/notification",notificationHandler)
+    io.of("/chat").on("connection",chatHandler)
+
+    io.of("/notification").on("connection" , notificationHandler)
+
 
 }
