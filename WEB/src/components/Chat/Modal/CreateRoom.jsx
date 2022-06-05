@@ -6,12 +6,17 @@ import { isApiLoading, SET_DAILOGBOX_STATE, userData } from "../../../store/app"
 import InputField from "../../InputField";
 import SubmitButton from "../../Login/SubmitButton";
 import functions from "../../../utils/functions";
+import useSocket from "../../../hooks/useSocket.hook";
+import { CREATE_ROOM } from "../../../store/socketEvent";
 
 
 export default function CreateRoom() {
   const isLoading = useSelector(isApiLoading);
   const user = useSelector(userData)
   const dispatch = useDispatch();
+
+
+  const { chat: socket } = useSocket()
 
   const handleSubmit = async (event) => {
     try {
@@ -20,9 +25,11 @@ export default function CreateRoom() {
       const room = data.get("newRoom")
       if (room == "") return false
 
-      dispatch(SET_ROOM(room))
-      dispatch(SET_IS_MODAL_OPEN(false))
-      dispatch(SET_ACTIVE_ROOM(room))
+      /* fire socket event */
+      const roomObj = { roomName: room }
+      dispatch(CREATE_ROOM({ roomObj, user, socket }))
+      /* set room as active room */
+      /* set room as empty string */
 
     } catch (error) {
       dispatch(SET_DAILOGBOX_STATE(functions.setErrorAlert(error)))

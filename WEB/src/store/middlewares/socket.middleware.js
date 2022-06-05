@@ -1,39 +1,24 @@
-import { io } from "socket.io-client"
+const EVENTS = {
+    /* message Events */
+    SEND_MSG: "SEND_MSG",
+    RECEIVE_MSG: "RECEIVE_MSG",
+    /* notification Event */
+    NEW_USER_JOIN: "NEW_USER_JOIN",
+    /* chatroom Events */
+    ROOM_LIST: "ROOM_LIST",
+    ACTIVE_USERS: "ACTIVE_USERS",
+    JOIN_ROOM: "JOIN_ROOM",
+    CREATE_ROOM: "CREATE_ROOM"
 
+}
 /**
  * 
- * @param {Object} param0 
- * @param {String} param0.URL
- * @param {Array} param0.listeners
- * @param {Array} param0.emitters
+ * @param {import("socket.io-client").Socket} socket 
  * @returns 
  */
-const socketMiddleware = ({ URL, listeners, emitters }) => {
-
-    const socket = io(URL)
-    return store => next => action => {
-
-        const { type, payload } = action
-        if (type.match('socket/')) {
-            const [_, event] = type.split('socket/')
-
-            /* Listeners */
-            if (listeners.includes(event)) {
-                socket.on(event,val => store.dispatch(action(val)))
-            }
-
-            /* Emitter */
-            if (emitters.includes(event)) {
-                socket.emit(event,payload)
-            }
-        }
-
-        next(action)
-    }
+const socketMiddleware = ({getState, dispatch}) => next => action => {
+    console.log(getState())
+    return next(action)
 }
 
-
-
 export default socketMiddleware
-
-
