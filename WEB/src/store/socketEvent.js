@@ -14,18 +14,11 @@ const slice = createSlice({
             socket.emit("JOIN_ROOM", { room, user })
         },
         CREATE_ROOM: (state, { payload }) => {
-            const { socket, roomObj, user } = payload
+            // const { room, user } = payload
+            console.log({payload})
             /* fire to socket EVENT */
-            socket.emit("CREATE_ROOM", { roomObj, user })
-            const { rooms } = state
-            let newRoom = []
-
-            const isRoomExist = rooms.findIndex((room) => (room.roomName == roomObj.roomName))
-            if (!isRoomExist) {
-                newRoom = [...rooms, roomObj]
-            }
-
-            return { ...state, rooms: newRoom, activeRoom: roomObj }
+            // socket.emit("CREATE_ROOM", { ...room })
+            return { ...state }
         },
         SEND_MSG: (state, { payload }) => {
             const { socket } = payload

@@ -1,4 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit"
+import { configureStore,getDefaultMiddleware } from "@reduxjs/toolkit"
 import reducer from "./reducer"
 import socketMiddleware from "./middlewares/socket.middleware"
 
@@ -23,11 +23,14 @@ import {
 export default function () {
     return configureStore({
         reducer,
-        middleware: (getDefaultMiddleware) => getDefaultMiddleware({
-            serializableCheck: {
-                ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
-            }
-            // serializableCheck: false
-        }).concat(socketMiddleware)
+        middleware: [
+            ...getDefaultMiddleware({
+                serializableCheck: {
+                    ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
+                }
+                // serializableCheck: false
+            }),
+            socketMiddleware
+        ]
     })
 }
