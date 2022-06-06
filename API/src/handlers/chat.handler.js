@@ -1,3 +1,13 @@
+const { v4: uuidv4 } = require('uuid')
+/* TEST */
+function formatMessage({ name }) {
+    return {
+        id: uuidv4(),
+        name
+    }
+}
+/* TEST */
+
 const EVENTS = {
     ROOM_LIST: "ROOM_LIST",
     ACTIVE_USERS: "ACTIVE_USERS",
@@ -21,19 +31,26 @@ const chatHandler = socket => {
         console.log({ roomName })
         /* save room */
 
-        if (!rooms.includes(roomName)) {
-            rooms.push(roomName)
+        const isExist = rooms.findIndex(val => val.roomName == roomName)
+
+        if (!isExist) {
+
+            const room = formatMessage({
+                roomName
+            })
+
+            rooms.push(room)
             socket.emit(EVENTS.ROOM_LIST, rooms)
         }
 
 
     })
 
-    socket.on(EVENTS.JOIN_ROOM, ({ room, username }) => {
-        console.log({ room, username })
+    socket.on(EVENTS.JOIN_ROOM, ({ room, user }) => {
+        console.log({ room, user })
         /* save room */
         socket.socketsJoin(room)
-        socket.emit(NOTIFCATION_EVENTS.NEW_USER_JOIN, { room, username })
+        socket.emit(NOTIFCATION_EVENTS.NEW_USER_JOIN, { room, user })
     })
 
 
