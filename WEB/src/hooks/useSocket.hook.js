@@ -36,6 +36,10 @@ export default function useSocket() {
             console.log({ payload })
         })
 
+        socket.on("ROOM_LIST", (payload) => {
+            console.log({ payload })
+        })
+
         chat.on("NEW_USER_JOIN", (payload) => {
             console.log({ payload })
         })
@@ -58,7 +62,7 @@ export default function useSocket() {
             chat.off("ACTIVE_USERS")
         }
 
-    }, [isConnected])
+    }, [isConnected,chat])
 
     return {
         isConnected,

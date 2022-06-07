@@ -16,8 +16,18 @@ const EVENTS = {
  * @param {import("socket.io-client").Socket} socket 
  * @returns 
  */
-const socketMiddleware = ({getState, dispatch}) => next => action => {
-    console.log(getState())
+const socketMiddleware = _store => next => action => {
+
+    const { type, payload } = action
+
+    if (type.match("socketEvent")) {
+
+        const { socket, ...data } = payload
+        const [_, EVENT] = type.split("/")
+        console.log(data)
+        socket.emit(EVENT, data)
+    }
+
     return next(action)
 }
 

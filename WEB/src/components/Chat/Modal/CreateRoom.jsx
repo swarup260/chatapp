@@ -1,6 +1,7 @@
 import Box from "@mui/material/Box";
 import { useDispatch, useSelector } from "react-redux";
 import Joi from "joi";
+import { useEffect } from "react"
 
 import {
   isApiLoading,
@@ -19,6 +20,12 @@ export default function CreateRoom() {
   const dispatch = useDispatch();
 
   const { chat: socket } = useSocket();
+
+  useEffect(()=>{
+    socket.on("ROOM_LIST",(payload) => {
+      console.log("ROOM_LIST",{payload})
+    })
+  },[])
 
   const handleSubmit = async (event) => {
     try {

@@ -10,20 +10,16 @@ const slice = createSlice({
     reducers: {
         JOIN_ROOM: (state, { payload }) => {
             const { socket, room, user } = payload
-            /* fire to socket EVENT */
-            socket.emit("JOIN_ROOM", { room, user })
+            return { ...state }
         },
         CREATE_ROOM: (state, { payload }) => {
             // const { room, user } = payload
-            console.log({payload})
-            /* fire to socket EVENT */
-            // socket.emit("CREATE_ROOM", { ...room })
+            console.log({ payload })
             return { ...state }
         },
         SEND_MSG: (state, { payload }) => {
             const { socket } = payload
-            /* fire to socket EVENT */
-            socket.emit("", {})
+            return { ...state }
         },
         SET_ACTIVE_ROOM: (state, { payload }) => {
 
