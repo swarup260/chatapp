@@ -1,6 +1,6 @@
 const { v4: uuidv4 } = require('uuid')
 /* TEST */
-function formatMessage({ roomName }) {
+function roomObject({ roomName }) {
     return {
         id: uuidv4(),
         roomName
@@ -8,7 +8,7 @@ function formatMessage({ roomName }) {
 }
 
 
-function formatNotificationMessage({ body, type = "string", userID, roomID }) {
+function formatMessage({ body, type = "string", userID, roomID }) {
     return {
         id: uuidv4(),
         body,
@@ -17,24 +17,28 @@ function formatNotificationMessage({ body, type = "string", userID, roomID }) {
         roomID
     }
 }
-
 /* TEST */
+
+const rooms = []
+const users = []
+
 
 const EVENTS = {
     ROOM_LIST: "ROOM_LIST",
     ACTIVE_USERS: "ACTIVE_USERS",
     JOIN_ROOM: "JOIN_ROOM",
     CREATE_ROOM: "CREATE_ROOM",
-    NEW_USER_JOIN: "NEW_USER_JOIN"
+    NEW_USER_JOIN: "NEW_USER_JOIN",
+    SEND_MSG: "SEND_MSG",
+    RECEIVE_MSG: "RECEIVE_MSG"
 }
 
 
-const rooms = []
-/**
- * 
- * @param {import("socket.io").Server} socket 
- */
-const chatHandler = io => socket => {
+const mainHandler = io => socket => {
+
+    console.log("USER CONNECTED !")
+
+    /* CHAT ROOM */
 
     socket.emit(EVENTS.ROOM_LIST, rooms)
 
@@ -49,7 +53,7 @@ const chatHandler = io => socket => {
 
         if (isExist == -1) {
 
-            const room = formatMessage({
+            const room = roomObject({
                 roomName
             })
 
@@ -59,6 +63,8 @@ const chatHandler = io => socket => {
 
 
     })
+
+    /* NOTIFICATION  */
 
     socket.on(EVENTS.JOIN_ROOM, ({ room, user }) => {
         console.log({ room, user })
@@ -70,17 +76,28 @@ const chatHandler = io => socket => {
 
         /* save code */
         const message = `New User Joined ${user.username}`
-        socket.to(roomName).emit(EVENTS.NEW_USER_JOIN, formatNotificationMessage({
+        socket.to(roomName).emit(EVENTS.NEW_USER_JOIN, formatMessage({
             body: message,
             userID: user.id,
             roomID: room.id
         }))
     })
 
+    /* MESSAGE */
+
+    socket.on(EVENTS.SEND_MSG, payload => {
+        console.log(EVENTS.SEND_MSG,{ payload })
+        const { room, message, user } = payload
+        /* save code */
+        socket.broadcast.emit(EVENTS.RECEIVE_MSG, formatMessage({
+            body: message,
+            userID: user.id,
+            roomID: room.id
+        }))
+    })
 
 }
 
 module.exports = {
-    EVENTS,
-    chatHandler
+    mainHandler
 }

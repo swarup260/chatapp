@@ -20,6 +20,8 @@
     "@koa/cors": "^3.3.0",
     "@koa/router": "^10.1.1",
     "@socket.io/mongo-adapter": "^0.2.1",
+    "@vscode/sqlite3": "^5.0.8",
+    "better-sqlite3": "^7.5.3",
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
     "knex": "^2.0.0",
@@ -29,6 +31,7 @@
     "mongodb": "^4.5.0",
     "mongoose": "^6.3.3",
     "socket.io": "^4.5.0",
-    "sqlite3": "^5.0.6"
+    "sqlite3": "^5.0.8",
+    "uuid": "^8.3.2"
   }
 }
