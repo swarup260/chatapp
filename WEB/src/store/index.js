@@ -27,10 +27,7 @@ export default function () {
             ...getDefaultMiddleware({
                 serializableCheck: {
                     ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-                    // Ignore these field paths in all actions
-                    ignoredActionPaths: ['payload.socket'],
                 }
-                // serializableCheck: false
             }),
             socketMiddleware
         ]

@@ -1,4 +1,3 @@
-// import { useNavigate } from "react-router-dom";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
@@ -9,28 +8,33 @@ import { useDispatch, useSelector } from "react-redux";
 
 
 import { roomList } from "../../../store/chat";
-import { isApiLoading,isModalOpen,SET_IS_MODAL_OPEN,userData } from "../../../store/app";
-import { socket } from "../../../config/socket";
+import { isApiLoading,SET_IS_MODAL_OPEN,userData } from "../../../store/app";
 import SubmitButton from "../../Login/SubmitButton";
-// import { SET_ROOM } from "../../../store/chat";
+import socketEmitter from "../../../utils/socketEmitter";
+import useSocket from "../../../hooks/useSocket.hook";
 
 export default function JoinRoom() {
   const [room, setRoom] = useState("");
-  const rooms = useSelector(roomList);
+  const roomsObject = useSelector(roomList);
+  const rooms = Object.values(roomsObject);
   const isLoading = useSelector(isApiLoading)
-  const isOpen = useSelector(isModalOpen)
   const dispatch = useDispatch()
 
-  // let navigate = useNavigate()
+  const { socket } = useSocket();
+
   const handleChange = (event) => setRoom(event.target.value);
-  const { id:userID } = useSelector(userData)
+  const user = useSelector(userData)
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // socket.emit(socketEvent.JOIN_ROOM,{room,userID})
-      // dispatch(SET_ROOM(room))
       dispatch(SET_IS_MODAL_OPEN(false))
-      // navigate("/chat", { replace: true });
+
+      socketEmitter
+        .setSocket(socket)
+        .joinRoom({ room:roomsObject[room], user });
+
+
+
   };
 
   return (
@@ -50,7 +54,7 @@ export default function JoinRoom() {
             <em>None</em>
           </MenuItem>
           {rooms.map((room,index) => (
-            <MenuItem value={room} key={index}>{room}</MenuItem>
+            <MenuItem value={room.id} key={index}>{room.roomName}</MenuItem>
           ))}
         </Select>
       </FormControl>

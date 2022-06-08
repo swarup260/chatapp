@@ -1,11 +1,12 @@
 import Box from "@mui/material/Box";
 import { useDispatch, useSelector } from "react-redux";
 import Joi from "joi";
-import { useEffect } from "react"
+import { useEffect } from "react";
 
 import {
   isApiLoading,
   SET_DAILOGBOX_STATE,
+  SET_IS_MODAL_OPEN,
   userData,
 } from "../../../store/app";
 import InputField from "../../InputField";
@@ -13,19 +14,14 @@ import SubmitButton from "../../Login/SubmitButton";
 import functions from "../../../utils/functions";
 import useSocket from "../../../hooks/useSocket.hook";
 import { CREATE_ROOM } from "../../../store/socketEvent";
+import socketEmitter from "../../../utils/socketEmitter";
 
 export default function CreateRoom() {
   const isLoading = useSelector(isApiLoading);
   const user = useSelector(userData);
   const dispatch = useDispatch();
 
-  const { chat: socket } = useSocket();
-
-  useEffect(()=>{
-    socket.on("ROOM_LIST",(payload) => {
-      console.log("ROOM_LIST",{payload})
-    })
-  },[])
+  const { socket } = useSocket();
 
   const handleSubmit = async (event) => {
     try {
@@ -35,11 +31,17 @@ export default function CreateRoom() {
       if (roomName == "") return false;
 
       const room = { roomName };
-      console.log({ room, user });
       /* fire socket event */
-      dispatch(CREATE_ROOM({ room, user ,socket }))
       /* set room as active room */
       /* set room as empty string */
+      socketEmitter
+        .setSocket(socket)
+        .createRoom({ room })
+        .joinRoom({ room, user });
+
+      dispatch(SET_IS_MODAL_OPEN(false))
+      
+
     } catch (error) {
       dispatch(SET_DAILOGBOX_STATE(functions.setErrorAlert(error)));
     }

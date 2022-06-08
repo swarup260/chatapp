@@ -22,10 +22,10 @@ const socketMiddleware = _store => next => action => {
 
     if (type.match("socketEvent")) {
 
-        const { socket, ...data } = payload
-        const [_, EVENT] = type.split("/")
-        console.log(data)
-        socket.emit(EVENT, data)
+        // const { socket, ...data } = payload
+        // const [_, EVENT] = type.split("/")
+        // console.log(data)
+        // socket.emit(EVENT, data)
     }
 
     return next(action)

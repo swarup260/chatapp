@@ -1,10 +1,11 @@
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
-import { useDispatch } from 'react-redux';
-import { SET_IS_MODAL_OPEN } from '../../../store/app';
+import { useDispatch,useSelector } from 'react-redux';
+import { SET_IS_MODAL_OPEN,isModalOpen } from '../../../store/app';
 
 export default function FabButton() {
 
+    const isOpen = useSelector(isModalOpen)
     const dispatch = useDispatch()
 
     return (

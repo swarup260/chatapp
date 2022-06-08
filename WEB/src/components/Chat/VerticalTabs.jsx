@@ -17,7 +17,7 @@ function a11yProps(index) {
 }
 
 export default function VerticalTabs() {
-  const chatRooms = useSelector(roomList);
+  const chatRooms = Object.values(useSelector(roomList));
   const dispatch = useDispatch()
 
   const [value, setValue] = useState(0);
@@ -45,15 +45,15 @@ export default function VerticalTabs() {
         aria-label="Vertical"
         sx={{ borderRight: 2, borderColor: "divider", width: "200px" }}
       >
-        {chatRooms.map((val, index) => (
-          <Tab label={`Chat Room: ${val}`} {...a11yProps(val)} key={index} />
+        {chatRooms.map((room) => (
+          <Tab label={`Chat Room: ${room.roomName}`} {...a11yProps(room.roomName)} key={room.id} />
         ))}
       </Tabs>
       {chatRooms.map((_, index) => {
         return (
           <TabPanel value={value} index={index} key={index}>
-            <MessageListWindow />
-            <ChatForm />
+          <MessageListWindow />
+          <ChatForm />
           </TabPanel>
         );
       })}

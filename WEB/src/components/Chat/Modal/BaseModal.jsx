@@ -1,5 +1,4 @@
 import Modal from "@mui/material/Modal";
-import Container from "@mui/material/Container";
 
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,7 +10,8 @@ import ModalBody from "./ModalBody";
 export default function BaseModal() {
 
   const isOpen = useSelector(isModalOpen)
-  const rooms =  useSelector(roomList)
+  const rooms =  Object.values(useSelector(roomList))
+
 
   const dispatch = useDispatch()
 
@@ -25,7 +25,7 @@ export default function BaseModal() {
   },[])
 
   return (
-    <Container>
+    <>
       {/* MODAL BUTTON */}
       <FabButton/>
       {/* MODAL BODY */}
@@ -37,6 +37,6 @@ export default function BaseModal() {
       >
         <ModalBody />
       </Modal>
-    </Container>
+    </>
   );
 }

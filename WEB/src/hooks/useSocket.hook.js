@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Manager } from "socket.io-client";
+import { io } from "socket.io-client";
 
 import { SET_DAILOGBOX_STATE } from "../store/app";
+import { ADD_NEW_ROOM } from "../store/chat";
 import functions from "../utils/functions";
 
 export default function useSocket() {
@@ -11,13 +12,7 @@ export default function useSocket() {
     const dispatch = useDispatch()
 
 
-    const manager = new Manager(`http://${window.location.hostname}:5000`)
-
-    const socket = manager.socket("/")
-
-    const notification = manager.socket("/notification")
-    const message = manager.socket("/message")
-    const chat = manager.socket("/chat")
+    const socket = io(`http://${window.location.hostname}:5000`)
 
     useEffect(() => {
 
@@ -32,23 +27,23 @@ export default function useSocket() {
         })
 
 
-        chat.on("ROOM_LIST", (payload) => {
-            console.log({ payload })
-        })
-
         socket.on("ROOM_LIST", (payload) => {
             console.log({ payload })
+            payload.forEach(room => {
+                dispatch(ADD_NEW_ROOM(room))
+            });
         })
 
-        chat.on("NEW_USER_JOIN", (payload) => {
+
+        socket.on("NEW_USER_JOIN", (payload) => {
             console.log({ payload })
         })
 
-        message.on("RECEIVE_MSG", (payload) => {
+        socket.on("RECEIVE_MSG", (payload) => {
             console.log({ payload })
         })
 
-        chat.on("ACTIVE_USERS", (payload) => {
+        socket.on("ACTIVE_USERS", (payload) => {
             console.log({ payload })
         })
 
@@ -56,19 +51,17 @@ export default function useSocket() {
         return () => {
             socket.off("connect")
             socket.off("disconnect")
-            notification.off("NEW_USER_JOIN")
-            message.off("RECEIVE_MSG")
-            chat.off("ROOM_LIST")
-            chat.off("ACTIVE_USERS")
+            socket.off("NEW_USER_JOIN")
+            socket.off("RECEIVE_MSG")
+            socket.off("ROOM_LIST")
+            socket.off("ACTIVE_USERS")
         }
 
-    }, [isConnected,chat])
+    }, [isConnected])
 
     return {
         isConnected,
-        notification,
-        chat,
-        message
+        socket
     }
 
 } 

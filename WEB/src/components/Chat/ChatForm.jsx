@@ -5,15 +5,19 @@ import Joi from "joi";
 import InputField from "../InputField";
 import { useDispatch, useSelector } from "react-redux";
 import { userData } from "../../store/app";
-import { socketEvent } from "../../config/socket";
 import { useState } from "react";
-import { SET_ROOM_MESSAGE } from "../../store/chat";
-import { socket } from "../../config/socket";
+import socketEmitter from "../../utils/socketEmitter";
+import useSocket from "../../hooks/useSocket.hook";
+import { activeRoom } from "../../store/chat";
 
 export default function ChataForm() {
+  const { socket } = useSocket();
+
   const [messageBody, setMessageBody] = useState("");
-  
-  const { id } = useSelector(userData);
+
+  const room = useSelector(activeRoom);
+
+  const user = useSelector(userData);
   const dispatch = useDispatch();
 
   const onChangeHandler = (e) => setMessageBody(e.target.value);
@@ -22,21 +26,16 @@ export default function ChataForm() {
     try {
       event.preventDefault();
       const data = new FormData(event.currentTarget);
-      const messageBody = data.get("message");
-      if (messageBody == "") {
+      const message = data.get("message");
+      if (message == "") {
         return false;
       }
 
-      const message = {
-        message: messageBody,
-        id,
-      }
-      socket.emit(socketEvent.SEND_MESSAGE, message);
+      console.log({ message });
 
-      dispatch(SET_ROOM_MESSAGE({ roomName: "public", message }))
+      socketEmitter.setSocket(socket).sendMsg({ message, user, room });
 
-      setMessageBody("")
-
+      setMessageBody("");
     } catch (error) {
       console.log(error);
     }
